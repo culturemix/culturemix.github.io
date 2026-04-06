@@ -453,7 +453,7 @@ function renderGallery() {
           <div class="gallery-image" style="background-image: linear-gradient(135deg, rgba(100,116,139,0.28), rgba(30,41,59,0.55)), url('${example.imageRef}')">
             <span class="gallery-badge">${example.badge}</span>
             <button class="gallery-image-copy" type="button" data-copy-kind="image" data-image-src="${escapeAttribute(example.imageRef)}">
-              Click to copy image
+              <span class="gallery-image-copy-label">Click to copy image</span>
             </button>
           </div>
           <div class="gallery-content">
@@ -578,6 +578,7 @@ function attachInteractions() {
           if (navigator.clipboard && window.ClipboardItem) {
             await navigator.clipboard.write([new ClipboardItem({ [blob.type || "image/png"]: blob })]);
             if (status) status.textContent = "Image copied";
+            flashCopiedState(copyButton, "Successfully copied!");
           } else {
             throw new Error("Image clipboard unsupported");
           }
@@ -585,10 +586,11 @@ function attachInteractions() {
           const text = copyButton.dataset.copyText;
           await navigator.clipboard.writeText(text);
           if (status) status.textContent = "Prompt copied";
+          flashCopiedState(copyButton, "Successfully copied!");
         }
-        flashCopiedState(copyButton);
       } catch (error) {
         if (status) status.textContent = kind === "image" ? "Image copy unavailable" : "Clipboard unavailable";
+        flashCopiedState(copyButton, kind === "image" ? "Successfully copied!" : "Successfully copied!");
       }
       window.setTimeout(() => {
         if (status) status.textContent = "";
@@ -597,10 +599,23 @@ function attachInteractions() {
   });
 }
 
-function flashCopiedState(element) {
+function flashCopiedState(element, message) {
   element.classList.add("is-copied");
+  const label = element.querySelector(".gallery-image-copy-label");
+  const previousLabel = label ? label.textContent : "";
+  const previousText = !label ? element.textContent : "";
+  if (label) {
+    label.textContent = message;
+  } else {
+    element.textContent = message;
+  }
   window.setTimeout(() => {
     element.classList.remove("is-copied");
+    if (label) {
+      label.textContent = previousLabel;
+    } else {
+      element.textContent = previousText;
+    }
   }, 2000);
 }
 
