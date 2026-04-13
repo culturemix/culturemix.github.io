@@ -66,7 +66,7 @@ const heroExamples = [
     title: "Cuisine under mixed travel cues",
     tag: "Confused Tourist",
     text: "Cuisine recognition weakens when the scene introduces a conflicting sense of place.",
-    image: "static/images/carousel2.jpg"
+    image: "static/images/gallery/vlm_tourist/soto_japan.jpeg"
   },
   {
     title: "Food + person perturbation",
@@ -99,30 +99,39 @@ const galleryDatasets = [
     filters: ["All", "Cuisine", "Attire", "Instruments"],
     examples: [
       {
-        title: "Injera with mismatched travel context",
+        title: "Soto with Japanese travel cues",
         filter: "Cuisine",
         prompt:
-          "A plated Ethiopian injera set as the focal dish in a polished travel-photo composition with environmental details suggesting a different cultural destination.",
-        imageRef: "static/images/carousel2.jpg",
-        groundTruth: "Ethiopian injera",
+          "A bowl of Indonesian soto presented as the focal dish in a polished travel-photo composition, while the surrounding scene suggests Japan rather than Indonesia.",
+        imageRef: "static/images/gallery/vlm_tourist/soto_japan.jpeg",
+        groundTruthCountry: "Indonesia",
+        predictedCountry: "Japan",
+        groundTruthItem: "Soto",
+        predictedItem: "Ramen",
         tags: ["cuisine", "place conflict"]
       },
       {
-        title: "Ramen with conflicting destination cues",
+        title: "Borscht with Spanish destination cues",
         filter: "Cuisine",
         prompt:
-          "A stacked travel-style visual centered on ramen, where the dish remains visually dominant but the overall composition suggests a conflicting destination identity.",
-        imageRef: "static/images/carousel1.jpg",
-        groundTruth: "Japanese ramen",
+          "A travel-style image centered on borscht, with the food remaining visually dominant while the broader composition suggests Spain rather than its expected cultural origin.",
+        imageRef: "static/images/gallery/vlm_tourist/borscht_spain.jpeg",
+        groundTruthCountry: "Russia",
+        predictedCountry: "Spain",
+        groundTruthItem: "Borscht",
+        predictedItem: "Gazpacho",
         tags: ["cuisine", "stacked framing"]
       },
       {
-        title: "Pho under non-Vietnamese street cues",
-        filter: "Cuisine",
+        title: "Kozhukh with Romanian street cues",
+        filter: "Attire",
         prompt:
-          "A steaming bowl of pho as the clear subject, photographed in a busy street frame where signage and architecture imply a different country than Vietnam.",
-        imageRef: "static/images/carousel3.jpg",
-        groundTruth: "Vietnamese pho",
+          "A plated serving of kozhukh as the clear subject, photographed in a street scene where signage and architecture imply Romania rather than the dish's expected origin.",
+        imageRef: "static/images/gallery/vlm_tourist/kozukh_romania.jpeg",
+        groundTruthCountry: "Ukraine",
+        predictedCountry: "Romania",
+        groundTruthItem: "Kozhukh",
+        predictedItem: "Cojoc",
         tags: ["cuisine", "street context"]
       },
       {
@@ -131,7 +140,10 @@ const galleryDatasets = [
         prompt:
           "Mexican street tacos on a metal tray, shot so the food is sharp while the plaza and facades behind suggest a European city rather than Mexico.",
         imageRef: "static/images/carousel4.jpg",
-        groundTruth: "Mexican tacos",
+        groundTruthCountry: "",
+        predictedCountry: "",
+        groundTruthItem: "Mexican tacos",
+        predictedItem: "",
         tags: ["cuisine", "architecture cue"]
       },
       {
@@ -140,7 +152,10 @@ const galleryDatasets = [
         prompt:
           "A full-body fashion photo of a model wearing a Korean hanbok while the broader scene introduces cues associated with another country.",
         imageRef: "static/images/carousel3.jpg",
-        groundTruth: "Korean hanbok",
+        groundTruthCountry: "",
+        predictedCountry: "",
+        groundTruthItem: "Korean hanbok",
+        predictedItem: "",
         tags: ["attire", "scene mismatch"]
       },
       {
@@ -149,7 +164,10 @@ const galleryDatasets = [
         prompt:
           "A woman in a vivid Indian sari, framed against sandstone monuments and heat haze more typical of the Middle East than the Indian subcontinent.",
         imageRef: "static/images/carousel2.jpg",
-        groundTruth: "Indian sari",
+        groundTruthCountry: "",
+        predictedCountry: "",
+        groundTruthItem: "Indian sari",
+        predictedItem: "",
         tags: ["attire", "landmark confusion"]
       },
       {
@@ -158,7 +176,10 @@ const galleryDatasets = [
         prompt:
           "Scottish kilt outfit in focus, posed on a waterfront with pastel buildings and boats that read as Mediterranean rather than Scotland.",
         imageRef: "static/images/carousel4.jpg",
-        groundTruth: "Scottish kilt",
+        groundTruthCountry: "",
+        predictedCountry: "",
+        groundTruthItem: "Scottish kilt",
+        predictedItem: "",
         tags: ["attire", "harbor context"]
       },
       {
@@ -167,7 +188,10 @@ const galleryDatasets = [
         prompt:
           "A traditional sitar presented in a clean studio-style composition while surrounding context implies a different geographic origin than the instrument itself.",
         imageRef: "static/images/carousel4.jpg",
-        groundTruth: "Indian sitar",
+        groundTruthCountry: "",
+        predictedCountry: "",
+        groundTruthItem: "Indian sitar",
+        predictedItem: "",
         tags: ["instrument", "prop conflict"]
       },
       {
@@ -176,7 +200,10 @@ const galleryDatasets = [
         prompt:
           "Highland bagpipes held by a musician, with lush tropical plants and bright sun in the background inconsistent with Scottish Highlands imagery.",
         imageRef: "static/images/carousel1.jpg",
-        groundTruth: "Scottish bagpipes",
+        groundTruthCountry: "",
+        predictedCountry: "",
+        groundTruthItem: "Scottish bagpipes",
+        predictedItem: "",
         tags: ["instrument", "vegetation cue"]
       },
       {
@@ -185,7 +212,10 @@ const galleryDatasets = [
         prompt:
           "Japanese taiko drums on stands, photographed in a stone Gothic interior that clashes with typical festival or shrine settings for this instrument.",
         imageRef: "static/images/carousel2.jpg",
-        groundTruth: "Japanese taiko",
+        groundTruthCountry: "",
+        predictedCountry: "",
+        groundTruthItem: "Japanese taiko",
+        predictedItem: "",
         tags: ["instrument", "architecture"]
       }
     ]
@@ -605,14 +635,32 @@ function renderGallery() {
   grid.innerHTML = visible
     .map(
       (example) => `
-        <article class="gallery-card">
+        <article class="gallery-card ${dataset.id === "confused-tourist" ? "gallery-card-tourist" : ""}">
           <div class="gallery-image" style="background-image: linear-gradient(135deg, rgba(100,116,139,0.28), rgba(30,41,59,0.55)), url('${example.imageRef}')">
-            <button class="gallery-image-zoom" type="button" data-zoom-src="${escapeAttribute(example.imageRef)}" data-zoom-caption="${escapeAttribute(example.cultureCue ? `Food: ${example.cultureCue.food} · Background: ${example.cultureCue.background}` : example.groundTruth)}">
+            <button class="gallery-image-zoom" type="button" data-zoom-src="${escapeAttribute(example.imageRef)}" data-zoom-caption="${escapeAttribute(
+              example.cultureCue
+                ? `Food: ${example.cultureCue.food} · Background: ${example.cultureCue.background}`
+                : example.groundTruth || example.groundTruthItem || example.title
+            )}">
               <span class="gallery-image-zoom-label"></span>
             </button>
           </div>
           <div class="gallery-content">
-            <h3>${example.title}</h3>
+            <div class="gallery-head">
+              <h3>${example.title}</h3>
+              ${
+                dataset.id === "confused-tourist"
+                  ? `<button
+                class="citation-copy-icon gallery-copy-icon"
+                type="button"
+                data-write-eval-prompt="true"
+                data-copy-category="${escapeAttribute(getEvaluationCategory(example))}"
+                aria-label="Copy evaluation prompt"
+                title="Copy evaluation prompt"
+              ></button>`
+                  : ""
+              }
+            </div>
             ${
               example.cultureCue
                 ? `<p class="gallery-culture-lines"><span class="culture-label">Food:</span> ${example.cultureCue.food}<br><span class="culture-label">Background:</span> ${example.cultureCue.background}</p>`
@@ -620,9 +668,18 @@ function renderGallery() {
             }
             ${example.description ? `<p class="gallery-description">${example.description}</p>` : ""}
             <p class="gallery-prompt">${example.prompt}</p>
-            <div class="ground-truth-row">
-              <span class="ground-truth-pill">${example.groundTruth}</span>
-            </div>
+            ${
+              dataset.id === "confused-tourist"
+                ? `<div class="tourist-eval-grid">
+              ${renderEvalField("Ground Truth Country", example.groundTruthCountry)}
+              ${renderEvalField("Predicted Country", example.predictedCountry)}
+              ${renderEvalField("Ground Truth Item", example.groundTruthItem)}
+              ${renderEvalField("Predicted Item", example.predictedItem)}
+            </div>`
+                : `<div class="ground-truth-row">
+              <span class="ground-truth-pill">${example.groundTruth || example.groundTruthItem || ""}</span>
+            </div>`
+            }
           </div>
         </article>
       `
@@ -754,6 +811,49 @@ function renderResources() {
     .join("");
 }
 
+function getEvaluationCategory(example) {
+  const categoryMap = {
+    Cuisine: "cuisine",
+    Attire: "attire",
+    Instruments: "instrument",
+    Food: "food",
+    Clothing: "clothing",
+    Place: "food",
+    Country: "food",
+    Ethnicity: "food"
+  };
+  return categoryMap[example.filter] || "cultural object";
+}
+
+function renderEvalField(label, value) {
+  const displayValue = value && value.trim() ? value : "Fill this";
+  const emptyClass = value && value.trim() ? "" : " is-empty";
+  const toneClass = label.toLowerCase().includes("ground truth") ? " is-ground-truth" : " is-predicted";
+  return `<div class="tourist-eval-cell${toneClass}${emptyClass}">
+    <span class="tourist-eval-label">${label}</span>
+    <strong class="tourist-eval-value">${displayValue}</strong>
+  </div>`;
+}
+
+function buildEvaluationPrompt(category) {
+  return `Observe the image and determine from which country the ${category} originally comes from.\nReturn the country name only.\n\nIn this image, there is a cultural ${category} object. Determine the original name of this object.\nReturn the original name of this object only.`;
+}
+
+async function writeEvaluationPrompt(category, button) {
+  const promptText = buildEvaluationPrompt(category);
+  try {
+    await navigator.clipboard.writeText(promptText);
+    button.classList.add("is-copied");
+  } catch (_error) {
+    button.classList.add("is-copy-failed");
+  }
+
+  window.setTimeout(() => {
+    button.classList.remove("is-copied");
+    button.classList.remove("is-copy-failed");
+  }, 1400);
+}
+
 function attachInteractions() {
   document.addEventListener("click", (event) => {
     const datasetButton = event.target.closest("[data-dataset-id]");
@@ -793,6 +893,13 @@ function attachInteractions() {
           }, 1200);
         })
         .catch(() => {});
+      return;
+    }
+
+    const tryButton = event.target.closest("[data-write-eval-prompt]");
+    if (tryButton) {
+      const category = tryButton.dataset.copyCategory || "cultural object";
+      writeEvaluationPrompt(category, tryButton);
     }
   });
 }

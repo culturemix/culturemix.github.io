@@ -825,6 +825,17 @@ button {
   padding: 18px;
 }
 
+.gallery-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.gallery-head h3 {
+  margin: 0;
+}
+
 .gallery-content .gallery-culture-lines {
   margin: 0 0 12px;
   font-size: 0.9rem;
@@ -958,6 +969,89 @@ button {
   font-size: 0.88rem;
   font-style: italic;
   opacity: 0.95;
+}
+
+.gallery-card-tourist {
+  flex-basis: min(340px, calc(100vw - 48px));
+  max-width: 360px;
+}
+
+.gallery-copy-icon {
+  position: static;
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.gallery-copy-icon.is-copy-failed {
+  border-color: #f87171;
+}
+
+.tourist-eval-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.tourist-eval-cell {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.96), rgba(241, 245, 249, 0.92));
+}
+
+.tourist-eval-cell.is-ground-truth {
+  border-color: rgba(16, 185, 129, 0.28);
+  background: linear-gradient(180deg, rgba(236, 253, 245, 0.96), rgba(209, 250, 229, 0.88));
+}
+
+.tourist-eval-cell.is-predicted {
+  border-color: rgba(248, 113, 113, 0.28);
+  background: linear-gradient(180deg, rgba(254, 242, 242, 0.96), rgba(254, 226, 226, 0.88));
+}
+
+.tourist-eval-cell.is-empty {
+  border-style: dashed;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.7), rgba(241, 245, 249, 0.52));
+}
+
+.tourist-eval-cell.is-ground-truth.is-empty {
+  background: linear-gradient(180deg, rgba(236, 253, 245, 0.72), rgba(209, 250, 229, 0.48));
+}
+
+.tourist-eval-cell.is-predicted.is-empty {
+  background: linear-gradient(180deg, rgba(254, 242, 242, 0.72), rgba(254, 226, 226, 0.48));
+}
+
+.tourist-eval-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.tourist-eval-value {
+  display: block;
+  font-size: 0.96rem;
+  line-height: 1.35;
+  color: #0f172a;
+}
+
+.tourist-eval-cell.is-ground-truth .tourist-eval-value {
+  color: #065f46;
+}
+
+.tourist-eval-cell.is-predicted .tourist-eval-value {
+  color: #991b1b;
+}
+
+.tourist-eval-cell.is-empty .tourist-eval-value {
+  color: #94a3b8;
+  font-weight: 600;
 }
 
 .ground-truth-row {
