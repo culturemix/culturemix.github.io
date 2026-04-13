@@ -1,6 +1,7 @@
 const papers = [
   {
     index: "[1]",
+    paperClass: "wif",
     fullTitle: "World in a Frame: Understanding Culture Mixing as a New Challenge for Vision-Language Models",
     venue: "CVPR 2026",
     venueClass: "cvpr",
@@ -17,6 +18,7 @@ const papers = [
   },
   {
     index: "[2]",
+    paperClass: "ct",
     fullTitle: "Vision Language Models are Confused Tourists",
     venue: "CVPR 2026",
     venueClass: "cvpr",
@@ -33,6 +35,7 @@ const papers = [
   },
   {
     index: "[3]",
+    paperClass: "ttk",
     fullTitle: "When Tom Eats Kimchi: Evaluating Cultural Bias of Multimodal Large Language Models in Cultural Mixture Contexts",
     venue: "CL Workshop",
     venueClass: "cl",
@@ -79,53 +82,16 @@ const heroExamples = [
   }
 ];
 
+const seedLineageGroups =
+  typeof __WIF_SEED_LINEAGE__ !== "undefined" && Array.isArray(__WIF_SEED_LINEAGE__) ? __WIF_SEED_LINEAGE__ : [];
+
 const galleryDatasets = [
   {
     id: "world-in-a-frame",
     label: "World in a Frame",
-    filters: ["All", "Food+Street", "Food+Restaurant", "Food+Person", "Background Shift"],
-    examples: [
-      {
-        title: "Pho in a Seoul alley",
-        filter: "Food+Street",
-        prompt:
-          "An overhead shot of a steaming bowl of Vietnamese pho placed on a street-side metal table in a Seoul night market, neon Hangul signs glowing in the background.",
-        imageRef: "static/images/carousel1.jpg",
-        groundTruth: "Ground truth: Vietnamese pho",
-        tags: ["food", "street", "background shift"],
-        badge: "Prompt-ready placeholder"
-      },
-      {
-        title: "Tacos in a sushi bar",
-        filter: "Food+Restaurant",
-        prompt:
-          "A plate of Mexican tacos served on a wooden counter inside a minimalist Japanese sushi bar, with chopsticks, noren curtains, and chefs behind the counter.",
-        imageRef: "static/images/carousel2.jpg",
-        groundTruth: "Ground truth: Mexican tacos",
-        tags: ["food", "restaurant", "mixed cuisine"],
-        badge: "Prompt-ready placeholder"
-      },
-      {
-        title: "Kimchi with cross-cultural diner",
-        filter: "Food+Person",
-        prompt:
-          "A close-up of kimchi jjigae being eaten by a Black male diner in a bright kitchen portrait setup, keeping the stew clearly visible as the focal food item.",
-        imageRef: "static/images/carousel3.jpg",
-        groundTruth: "Ground truth: Korean kimchi jjigae",
-        tags: ["food", "person cue", "identity perturbation"],
-        badge: "Prompt-ready placeholder"
-      },
-      {
-        title: "Biryani with cultural backdrop swap",
-        filter: "Background Shift",
-        prompt:
-          "A top-down editorial image of Indian biryani on a neutral plate, composited into a Scandinavian cafe interior with pale wood furniture and large windows.",
-        imageRef: "static/images/carousel4.jpg",
-        groundTruth: "Ground truth: Indian biryani",
-        tags: ["food", "background", "context sensitivity"],
-        badge: "Prompt-ready placeholder"
-      }
-    ]
+    filters: ["All", "Food", "Food+Background", "Food+Food", "Food+Food+Background"],
+    layout: "lineage",
+    examples: seedLineageGroups
   },
   {
     id: "confused-tourist",
@@ -133,44 +99,94 @@ const galleryDatasets = [
     filters: ["All", "Cuisine", "Attire", "Instruments"],
     examples: [
       {
-        title: "Cuisine under conflicting place cues",
+        title: "Injera with mismatched travel context",
         filter: "Cuisine",
         prompt:
           "A plated Ethiopian injera set as the focal dish in a polished travel-photo composition with environmental details suggesting a different cultural destination.",
         imageRef: "static/images/carousel2.jpg",
-        groundTruth: "Ground truth: Ethiopian injera",
-        tags: ["cuisine", "travel cue", "geo conflict"],
-        badge: "Dataset-inspired"
+        groundTruth: "Ethiopian injera",
+        tags: ["cuisine", "place conflict"]
       },
       {
-        title: "Attire under mixed context",
-        filter: "Attire",
-        prompt:
-          "A full-body fashion photo of a model wearing a Korean hanbok while the broader scene introduces cues associated with another country.",
-        imageRef: "static/images/carousel3.jpg",
-        groundTruth: "Ground truth: Korean hanbok",
-        tags: ["attire", "culture cue", "robustness"],
-        badge: "Dataset-inspired"
-      },
-      {
-        title: "Instrument with contextual mismatch",
-        filter: "Instruments",
-        prompt:
-          "A traditional sitar presented in a clean studio-style composition while surrounding context implies a different geographic origin than the instrument itself.",
-        imageRef: "static/images/carousel4.jpg",
-        groundTruth: "Ground truth: Indian sitar",
-        tags: ["instrument", "context shift", "mixed cue"],
-        badge: "Dataset-inspired"
-      },
-      {
-        title: "Cuisine collage example",
+        title: "Ramen with conflicting destination cues",
         filter: "Cuisine",
         prompt:
           "A stacked travel-style visual centered on ramen, where the dish remains visually dominant but the overall composition suggests a conflicting destination identity.",
         imageRef: "static/images/carousel1.jpg",
-        groundTruth: "Ground truth: Japanese ramen",
-        tags: ["cuisine", "stacked image", "adversarial"],
-        badge: "Dataset-inspired"
+        groundTruth: "Japanese ramen",
+        tags: ["cuisine", "stacked framing"]
+      },
+      {
+        title: "Pho under non-Vietnamese street cues",
+        filter: "Cuisine",
+        prompt:
+          "A steaming bowl of pho as the clear subject, photographed in a busy street frame where signage and architecture imply a different country than Vietnam.",
+        imageRef: "static/images/carousel3.jpg",
+        groundTruth: "Vietnamese pho",
+        tags: ["cuisine", "street context"]
+      },
+      {
+        title: "Tacos with European plaza backdrop",
+        filter: "Cuisine",
+        prompt:
+          "Mexican street tacos on a metal tray, shot so the food is sharp while the plaza and facades behind suggest a European city rather than Mexico.",
+        imageRef: "static/images/carousel4.jpg",
+        groundTruth: "Mexican tacos",
+        tags: ["cuisine", "architecture cue"]
+      },
+      {
+        title: "Hanbok with non-Korean scene cues",
+        filter: "Attire",
+        prompt:
+          "A full-body fashion photo of a model wearing a Korean hanbok while the broader scene introduces cues associated with another country.",
+        imageRef: "static/images/carousel3.jpg",
+        groundTruth: "Korean hanbok",
+        tags: ["attire", "scene mismatch"]
+      },
+      {
+        title: "Sari with desert landmark backdrop",
+        filter: "Attire",
+        prompt:
+          "A woman in a vivid Indian sari, framed against sandstone monuments and heat haze more typical of the Middle East than the Indian subcontinent.",
+        imageRef: "static/images/carousel2.jpg",
+        groundTruth: "Indian sari",
+        tags: ["attire", "landmark confusion"]
+      },
+      {
+        title: "Kilt with Mediterranean harbor",
+        filter: "Attire",
+        prompt:
+          "Scottish kilt outfit in focus, posed on a waterfront with pastel buildings and boats that read as Mediterranean rather than Scotland.",
+        imageRef: "static/images/carousel4.jpg",
+        groundTruth: "Scottish kilt",
+        tags: ["attire", "harbor context"]
+      },
+      {
+        title: "Sitar with non-Indian studio props",
+        filter: "Instruments",
+        prompt:
+          "A traditional sitar presented in a clean studio-style composition while surrounding context implies a different geographic origin than the instrument itself.",
+        imageRef: "static/images/carousel4.jpg",
+        groundTruth: "Indian sitar",
+        tags: ["instrument", "prop conflict"]
+      },
+      {
+        title: "Bagpipes with tropical foliage",
+        filter: "Instruments",
+        prompt:
+          "Highland bagpipes held by a musician, with lush tropical plants and bright sun in the background inconsistent with Scottish Highlands imagery.",
+        imageRef: "static/images/carousel1.jpg",
+        groundTruth: "Scottish bagpipes",
+        tags: ["instrument", "vegetation cue"]
+      },
+      {
+        title: "Taiko drum in a Gothic hall",
+        filter: "Instruments",
+        prompt:
+          "Japanese taiko drums on stands, photographed in a stone Gothic interior that clashes with typical festival or shrine settings for this instrument.",
+        imageRef: "static/images/carousel2.jpg",
+        groundTruth: "Japanese taiko",
+        tags: ["instrument", "architecture"]
       }
     ]
   },
@@ -185,9 +201,8 @@ const galleryDatasets = [
         prompt:
           "A portrait-style image of an African man eating kimchi with chopsticks at a plain table, shot so the kimchi remains sharp and visually central.",
         imageRef: "static/images/carousel3.jpg",
-        groundTruth: "Ground truth: Korean kimchi",
-        tags: ["kimchi", "ethnicity", "food cue"],
-        badge: "Benchmark-grounded"
+        groundTruth: "Korean kimchi",
+        tags: ["food", "ethnicity"]
       },
       {
         title: "Sushi with alternate diner",
@@ -195,29 +210,80 @@ const galleryDatasets = [
         prompt:
           "A close-up of sushi held by a white female diner in a neutral indoor environment with soft lighting and minimal background distraction.",
         imageRef: "static/images/carousel1.jpg",
-        groundTruth: "Ground truth: Japanese sushi",
-        tags: ["food", "person", "controlled context"],
-        badge: "Benchmark-grounded"
+        groundTruth: "Japanese sushi",
+        tags: ["food", "diner cue"]
       },
       {
-        title: "Clothing and place cue shift",
+        title: "Bibimbap with diner ethnicity swap",
+        filter: "Food",
+        prompt:
+          "Korean bibimbap in a stone bowl as the focal dish, with a diner whose appearance does not match typical Korean representation in stock imagery.",
+        imageRef: "static/images/carousel2.jpg",
+        groundTruth: "Korean bibimbap",
+        tags: ["food", "representation"]
+      },
+      {
+        title: "Thai outfit with Turkish dish",
         filter: "Clothing",
         prompt:
           "A person wearing a traditional Thai outfit while holding a Turkish dish, photographed in a simple studio scene to isolate clothing and food signals.",
         imageRef: "static/images/carousel2.jpg",
-        groundTruth: "Ground truth: Thai attire / Turkish dish mixture",
-        tags: ["clothing", "food", "cue conflict"],
-        badge: "Benchmark-grounded"
+        groundTruth: "Thai attire / Turkish dish",
+        tags: ["clothing", "food"]
       },
       {
-        title: "Country-sensitive dish framing",
+        title: "Kimono with Italian pasta plate",
+        filter: "Clothing",
+        prompt:
+          "A model in formal Japanese kimono seated with a plate of spaghetti carbonara in frame, both elements clearly visible.",
+        imageRef: "static/images/carousel3.jpg",
+        groundTruth: "Japanese kimono + Italian pasta",
+        tags: ["clothing", "food"]
+      },
+      {
+        title: "Sari with English afternoon tea",
+        filter: "Clothing",
+        prompt:
+          "Indian sari in bright silk, beside a tiered stand of scones and tea cups suggesting British afternoon tea.",
+        imageRef: "static/images/carousel1.jpg",
+        groundTruth: "Indian sari",
+        tags: ["clothing", "place ritual"]
+      },
+      {
+        title: "Croissant with East Asian street signage",
+        filter: "Place",
+        prompt:
+          "A French croissant in sharp focus with blurred Hangul signage and Seoul-style storefronts in the background.",
+        imageRef: "static/images/carousel4.jpg",
+        groundTruth: "French croissant",
+        tags: ["food", "place cue"]
+      },
+      {
+        title: "Tacos with Japanese tatami corner",
+        filter: "Place",
+        prompt:
+          "Mexican tacos on a wooden board, placed on tatami and low table with shoji light patterns suggesting Japan.",
+        imageRef: "static/images/carousel1.jpg",
+        groundTruth: "Mexican tacos",
+        tags: ["food", "interior place"]
+      },
+      {
+        title: "Jollof with mismatched diner prior",
         filter: "Country",
         prompt:
           "A plate of jollof rice shown with a diner whose ethnicity does not match common web priors for the dish, keeping the image composition realistic and balanced.",
         imageRef: "static/images/carousel4.jpg",
-        groundTruth: "Ground truth: West African jollof rice",
-        tags: ["country", "low-resource culture", "bias test"],
-        badge: "Benchmark-grounded"
+        groundTruth: "West African jollof rice",
+        tags: ["country", "jollof"]
+      },
+      {
+        title: "Peking duck with Nordic diner",
+        filter: "Country",
+        prompt:
+          "Peking duck carved at table, with a blonde diner in Scandinavian casual dress as the main human subject beside the dish.",
+        imageRef: "static/images/carousel2.jpg",
+        groundTruth: "Chinese Peking duck",
+        tags: ["country", "food identity"]
       }
     ]
   }
@@ -288,8 +354,9 @@ const findings = [
 
 const resources = [
   {
+    paperClass: "wif",
     title: "World in a Frame",
-    description: "Food VQA benchmark for mixed-cultural scenes released as CultureMix.",
+    description: "",
     links: [{ label: "Paper", href: "https://arxiv.org/abs/2511.22787" }],
     codeLinks: [],
     citation: `@article{kim2025worldinframe,
@@ -300,8 +367,9 @@ const resources = [
 }`
   },
   {
+    paperClass: "ct",
     title: "Confused Tourist",
-    description: "Cultural robustness benchmark spanning cuisine, attire, and instruments.",
+    description: "",
     links: [{ label: "Paper", href: "https://arxiv.org/abs/2511.17004" }],
     codeLinks: [],
     citation: `@article{irawan2025confusedtourist,
@@ -312,8 +380,9 @@ const resources = [
 }`
   },
   {
+    paperClass: "ttk",
     title: "MixCuBe",
-    description: "Cross-cultural bias benchmark for MLLMs in person-food mixture settings.",
+    description: "",
     links: [{ label: "Paper", href: "https://arxiv.org/abs/2503.16826" }],
     codeLinks: [{ label: "Dataset", href: "https://huggingface.co/datasets/kyawyethu/MixCuBe" }],
     citation: `@article{kim2025tomkimchi,
@@ -357,6 +426,7 @@ function renderHeroExamples() {
 
 function startHeroRotation() {
   const track = document.getElementById("hero-carousel-track");
+  if (!track) return;
   if (heroTimer) {
     window.clearInterval(heroTimer);
   }
@@ -380,11 +450,10 @@ function renderPapers() {
   container.innerHTML = papers
     .map(
       (paper) => `
-        <article class="paper-card reveal-card">
-          <div class="paper-index">${paper.index}</div>
+        <article class="paper-card paper-${paper.paperClass || "wif"} reveal-card">
           <div class="paper-main">
             <div class="paper-title-row">
-              <h3>${paper.fullTitle}</h3>
+              <h3><span class="paper-title-highlight">${paper.fullTitle}</span></h3>
               <span class="venue-badge ${paper.venueClass}">${paper.venue}</span>
             </div>
             <div class="paper-meta">
@@ -445,35 +514,170 @@ function renderGallery() {
   const dataset = galleryDatasets.find((item) => item.id === state.datasetId);
   if (!grid || !dataset) return;
 
+  if (dataset.layout === "lineage") {
+    const showFood = state.filter === "All" || state.filter === "Food";
+    const showFB = state.filter === "All" || state.filter === "Food+Background";
+    const showFF = state.filter === "All" || state.filter === "Food+Food";
+    const showFFB = state.filter === "All" || state.filter === "Food+Food+Background";
+    grid.innerHTML = dataset.examples
+      .map(
+        (group) => `
+          <article class="gallery-card lineage-card">
+            <div class="gallery-content lineage-content">
+              <h3>Seed Food Name: ${group.seedFoodName}</h3>
+              <p class="gallery-culture-lines"><span class="culture-label">Country:</span> ${group.seedFoodCountry}</p>
+              ${
+                showFood
+                  ? `<div class="lineage-block">
+                <strong>Single food</strong>
+                <button class="lineage-image-single" type="button" data-zoom-src="${escapeAttribute(group.singleImageRef)}" data-zoom-caption="${escapeAttribute(`Single food · Seed: ${group.seedFoodCountry}`)}" style="background-image: url('${group.singleImageRef}')"></button>
+              </div>`
+                  : ""
+              }
+              ${
+                showFF
+                  ? `<div class="lineage-block">
+                <strong>Food + Food</strong>
+                <div class="lineage-mini-grid">
+                  ${group.mfSamples
+                    .map(
+                      (s) => `
+                        <div class="lineage-mini">
+                          <button class="lineage-mini-image" type="button" data-zoom-src="${escapeAttribute(s.imageRef)}" data-zoom-caption="${escapeAttribute(`Food+Food · Seed: ${group.seedFoodCountry} · Added: ${s.addedFoodCountry}`)}" style="background-image: url('${s.imageRef}')"></button>
+                          <span>Food2: ${s.addedFoodCountry}</span>
+                        </div>
+                      `
+                    )
+                    .join("")}
+                </div>
+              </div>`
+                  : ""
+              }
+              ${
+                showFB
+                  ? `<div class="lineage-block">
+                <strong>Food + Background</strong>
+                <div class="lineage-mini-grid compact">
+                  ${group.sfbSamples
+                    .map(
+                      (s) => `
+                        <div class="lineage-mini">
+                          <button class="lineage-mini-image" type="button" data-zoom-src="${escapeAttribute(s.imageRef)}" data-zoom-caption="${escapeAttribute(`Food+Background · Seed: ${group.seedFoodCountry} · Background: ${s.background}`)}" style="background-image: url('${s.imageRef}')"></button>
+                          <span>BG: ${s.background}</span>
+                        </div>
+                      `
+                    )
+                    .join("")}
+                </div>
+              </div>`
+                  : ""
+              }
+              ${
+                showFFB
+                  ? `<div class="lineage-block">
+                <strong>Food + Food + Background</strong>
+                <div class="lineage-mini-grid compact">
+                  ${group.mfbSamples
+                    .map(
+                      (s) => `
+                        <div class="lineage-mini">
+                          <button class="lineage-mini-image" type="button" data-zoom-src="${escapeAttribute(s.imageRef)}" data-zoom-caption="${escapeAttribute(`Food+Food+Background · Seed: ${group.seedFoodCountry} · Added: ${s.addedFoodCountry} · Background: ${s.background}`)}" style="background-image: url('${s.imageRef}')"></button>
+                          <span>Food2: ${s.addedFoodCountry}<br>BG: ${s.background}</span>
+                        </div>
+                      `
+                    )
+                    .join("")}
+                </div>
+              </div>`
+                  : ""
+              }
+            </div>
+          </article>
+        `
+      )
+      .join("");
+    const strip = document.getElementById("gallery-strip-wrap");
+    if (strip) strip.scrollLeft = 0;
+    return;
+  }
+
   const visible = dataset.examples.filter((example) => state.filter === "All" || example.filter === state.filter);
   grid.innerHTML = visible
     .map(
       (example) => `
         <article class="gallery-card">
           <div class="gallery-image" style="background-image: linear-gradient(135deg, rgba(100,116,139,0.28), rgba(30,41,59,0.55)), url('${example.imageRef}')">
-            <span class="gallery-badge">${example.badge}</span>
-            <button class="gallery-image-copy" type="button" data-copy-kind="image" data-image-src="${escapeAttribute(example.imageRef)}">
-              <span class="gallery-image-copy-label">Click to copy image</span>
+            <button class="gallery-image-zoom" type="button" data-zoom-src="${escapeAttribute(example.imageRef)}" data-zoom-caption="${escapeAttribute(example.cultureCue ? `Food: ${example.cultureCue.food} · Background: ${example.cultureCue.background}` : example.groundTruth)}">
+              <span class="gallery-image-zoom-label"></span>
             </button>
           </div>
           <div class="gallery-content">
             <h3>${example.title}</h3>
-            <p>${example.prompt}</p>
+            ${
+              example.cultureCue
+                ? `<p class="gallery-culture-lines"><span class="culture-label">Food:</span> ${example.cultureCue.food}<br><span class="culture-label">Background:</span> ${example.cultureCue.background}</p>`
+                : ""
+            }
+            ${example.description ? `<p class="gallery-description">${example.description}</p>` : ""}
+            <p class="gallery-prompt">${example.prompt}</p>
             <div class="ground-truth-row">
               <span class="ground-truth-pill">${example.groundTruth}</span>
-            </div>
-            <div class="gallery-tags">
-              ${example.tags.map((tag) => `<span>${tag}</span>`).join("")}
-            </div>
-            <div class="gallery-actions">
-              <button class="copy-button" type="button" data-copy-kind="prompt" data-copy-text="${escapeAttribute(example.prompt)}">Copy prompt</button>
-              <span class="copy-status" aria-live="polite"></span>
             </div>
           </div>
         </article>
       `
     )
     .join("");
+
+  const strip = document.getElementById("gallery-strip-wrap");
+  if (strip) strip.scrollLeft = 0;
+}
+
+function initGalleryStripDrag() {
+  const wrap = document.getElementById("gallery-strip-wrap");
+  if (!wrap || wrap.dataset.dragReady === "1") return;
+  wrap.dataset.dragReady = "1";
+
+  const threshold = 8;
+  let activeId = null;
+  let startX = 0;
+  let scrollStart = 0;
+  let dragging = false;
+
+  wrap.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0) return;
+    if (e.target.closest("button, a, input, textarea, select, label")) return;
+    activeId = e.pointerId;
+    startX = e.clientX;
+    scrollStart = wrap.scrollLeft;
+    dragging = false;
+  });
+
+  wrap.addEventListener(
+    "pointermove",
+    (e) => {
+      if (activeId !== e.pointerId) return;
+      const dx = e.clientX - startX;
+      if (!dragging) {
+        if (Math.abs(dx) < threshold) return;
+        dragging = true;
+        wrap.classList.add("is-dragging");
+      }
+      e.preventDefault();
+      wrap.scrollLeft = scrollStart - dx;
+    },
+    { passive: false }
+  );
+
+  const end = (e) => {
+    if (activeId !== e.pointerId) return;
+    activeId = null;
+    dragging = false;
+    wrap.classList.remove("is-dragging");
+  };
+
+  wrap.addEventListener("pointerup", end);
+  wrap.addEventListener("pointercancel", end);
 }
 
 function renderBenchmarks() {
@@ -530,16 +734,20 @@ function renderResources() {
   grid.innerHTML = resources
     .map(
       (item) => `
-        <article class="resource-card">
+        <article class="resource-card paper-${item.paperClass || "wif"}">
           <div>
-            <h3>${item.title}</h3>
-            <p>${item.description}</p>
-            <div class="resource-links">
-              ${item.links.map((link) => `<a class="resource-link" href="${link.href}" target="_blank" rel="noopener noreferrer">${link.label}</a>`).join("")}
-              ${item.codeLinks.map((link) => `<a class="resource-link" href="${link.href}" target="_blank" rel="noopener noreferrer">${link.label}</a>`).join("")}
-            </div>
+            <h3><span class="paper-title-highlight">${item.title}</span></h3>
           </div>
-          <pre>${item.citation}</pre>
+          <div class="citation-block">
+            <button
+              class="citation-copy-icon"
+              type="button"
+              data-copy-citation="${escapeAttribute(item.citation)}"
+              aria-label="Copy citation"
+              title="Copy citation"
+            ></button>
+            <pre>${item.citation}</pre>
+          </div>
         </article>
       `
     )
@@ -547,7 +755,7 @@ function renderResources() {
 }
 
 function attachInteractions() {
-  document.addEventListener("click", async (event) => {
+  document.addEventListener("click", (event) => {
     const datasetButton = event.target.closest("[data-dataset-id]");
     if (datasetButton) {
       state.datasetId = datasetButton.dataset.datasetId;
@@ -566,57 +774,59 @@ function attachInteractions() {
       return;
     }
 
-    const copyButton = event.target.closest("[data-copy-text], [data-image-src]");
-    if (copyButton) {
-      const kind = copyButton.dataset.copyKind;
-      const status = copyButton.parentElement.querySelector(".copy-status");
-      try {
-        if (kind === "image") {
-          const imageUrl = copyButton.dataset.imageSrc;
-          const response = await fetch(imageUrl);
-          const blob = await response.blob();
-          if (navigator.clipboard && window.ClipboardItem) {
-            await navigator.clipboard.write([new ClipboardItem({ [blob.type || "image/png"]: blob })]);
-            if (status) status.textContent = "Image copied";
-            flashCopiedState(copyButton, "Successfully copied!");
-          } else {
-            throw new Error("Image clipboard unsupported");
-          }
-        } else {
-          const text = copyButton.dataset.copyText;
-          await navigator.clipboard.writeText(text);
-          if (status) status.textContent = "Prompt copied";
-          flashCopiedState(copyButton, "Successfully copied!");
-        }
-      } catch (error) {
-        if (status) status.textContent = kind === "image" ? "Image copy unavailable" : "Clipboard unavailable";
-        flashCopiedState(copyButton, kind === "image" ? "Successfully copied!" : "Successfully copied!");
-      }
-      window.setTimeout(() => {
-        if (status) status.textContent = "";
-      }, 1800);
+    const zoomButton = event.target.closest("[data-zoom-src]");
+    if (zoomButton) {
+      openImageLightbox(zoomButton.dataset.zoomSrc, zoomButton.dataset.zoomCaption || "");
+      return;
+    }
+
+    const citationButton = event.target.closest("[data-copy-citation]");
+    if (citationButton) {
+      const citationText = citationButton.dataset.copyCitation || "";
+      if (!citationText) return;
+      navigator.clipboard
+        .writeText(citationText)
+        .then(() => {
+          citationButton.classList.add("is-copied");
+          window.setTimeout(() => {
+            citationButton.classList.remove("is-copied");
+          }, 1200);
+        })
+        .catch(() => {});
     }
   });
 }
 
-function flashCopiedState(element, message) {
-  element.classList.add("is-copied");
-  const label = element.querySelector(".gallery-image-copy-label");
-  const previousLabel = label ? label.textContent : "";
-  const previousText = !label ? element.textContent : "";
-  if (label) {
-    label.textContent = message;
-  } else {
-    element.textContent = message;
-  }
-  window.setTimeout(() => {
-    element.classList.remove("is-copied");
-    if (label) {
-      label.textContent = previousLabel;
-    } else {
-      element.textContent = previousText;
-    }
-  }, 2000);
+let lightboxState = null;
+
+function ensureLightbox() {
+  if (lightboxState) return lightboxState;
+  const container = document.createElement("div");
+  container.className = "image-lightbox";
+  container.innerHTML = `
+    <button class="lightbox-close" type="button" aria-label="Close image">×</button>
+    <img class="lightbox-image" alt="Expanded gallery image" />
+    <p class="lightbox-caption" aria-live="polite"></p>
+  `;
+  document.body.appendChild(container);
+  const image = container.querySelector(".lightbox-image");
+  const caption = container.querySelector(".lightbox-caption");
+  const close = () => container.classList.remove("is-open");
+  container.addEventListener("click", (e) => {
+    if (e.target === container || e.target.closest(".lightbox-close")) close();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+  });
+  lightboxState = { container, image, caption, close };
+  return lightboxState;
+}
+
+function openImageLightbox(src, captionText) {
+  const { container, image, caption } = ensureLightbox();
+  image.src = src;
+  if (caption) caption.textContent = captionText || "";
+  container.classList.add("is-open");
 }
 
 function setupReveal() {
@@ -658,6 +868,7 @@ function init() {
   renderFindings();
   renderResources();
   attachInteractions();
+  initGalleryStripDrag();
   setupReveal();
 }
 

@@ -25,6 +25,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="static/css/index.css">
+  <script defer src="static/js/wif-lineage-data.js"></script>
   <script defer src="static/js/index.js"></script>
 </head>
 <body>
@@ -43,68 +44,44 @@
     <main id="top">
       <section class="hero-section">
         <div class="hero-copy">
-          <p class="eyebrow">Academic Project Hub</p>
-          <h1>Do Vision-Language Models Understand CultureMix?</h1>
-          <p class="hero-lead">
-            Cultural cues rarely appear in isolation. This project page brings together three benchmarks showing how
-            vision-language models drift, overfit, and misclassify when food, people, landmarks, flags, and cultural
-            artifacts are mixed inside one scene.
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#threads">Read the papers</a>
-            <a class="button secondary" href="#gallery">Explore prompts</a>
-            <a class="button ghost" href="#resources">Open resources</a>
+          <h1>Do Vision-Language Models Understand <span class="hero-wave">CultureMix</span>?</h1>
+          <div class="hero-definition">
+            <h2 class="hero-subtitle">What is Culture Mix?</h2>
+            <p class="hero-lead">
+              Culture mix refers to a situation in which cultural elements from different origins appear together within
+              a single scene.
+            </p>
           </div>
         </div>
 
         <div class="hero-panel">
-          <div class="snapshot-grid">
-            <article class="snapshot-card">
-              <span class="snapshot-value">3</span>
-              <span class="snapshot-label">connected research threads</span>
-            </article>
-            <article class="snapshot-card">
-              <span class="snapshot-value">30k+</span>
-              <span class="snapshot-label">combined benchmarked samples</span>
-            </article>
-            <article class="snapshot-card">
-              <span class="snapshot-value">10+</span>
-              <span class="snapshot-label">LVLMs or MLLMs studied</span>
-            </article>
-            <article class="snapshot-card">
-              <span class="snapshot-value">Food · Person · Place</span>
-              <span class="snapshot-label">mixed-cue failure axes</span>
-            </article>
+          <div class="hero-example-grid">
+            <img src="static/images/carousel1.jpg" alt="Culture-mixed food and context example 1">
+            <img src="static/images/carousel2.jpg" alt="Culture-mixed food and context example 2">
+            <img src="static/images/carousel3.jpg" alt="Culture-mixed food and context example 3">
           </div>
-
-          <div class="hero-carousel">
-            <div class="panel-head">
-              <span>Illustrative mixtures</span>
+          <div class="hero-repo-card">
+            <p class="hero-repo-text">
+              This project page brings together three benchmarks showing how vision-language models drift, overfit, and
+              misclassify when food, people, landmarks, flags, and cultural artifacts are mixed inside one scene.
+            </p>
+            <div class="hero-paper-links">
+              <a class="hero-paper-link wif" href="https://arxiv.org/abs/2511.22787" target="_blank" rel="noopener noreferrer">World in a Frame<br>CVPR 2026</a>
+              <a class="hero-paper-link ct" href="https://arxiv.org/abs/2511.17004" target="_blank" rel="noopener noreferrer">Confused Tourists<br>CVPR 2026 (Findings)</a>
+              <a class="hero-paper-link ttk" href="https://arxiv.org/abs/2503.16826" target="_blank" rel="noopener noreferrer">When Tom Eats Kimchi<br>NAACL C3NLP 2025</a>
             </div>
-            <div class="hero-carousel-track" id="hero-carousel-track"></div>
           </div>
         </div>
       </section>
 
-      <section class="section-block section-emphasis" id="threads">
-        <div class="section-heading">
-          <p class="eyebrow">Research Threads</p>
-          <h2>Three papers, one shared question</h2>
-          <p>
-            Each paper probes a different failure mode: food mixed with people, food mixed with background, or cultural
-            attributes mixed across geography and identity.
-          </p>
-        </div>
-        <div class="paper-list" id="paper-list"></div>
-      </section>
-
-      <section class="section-block concept-section">
+      <section class="section-block section-emphasis concept-section" id="why-it-matters">
         <div class="section-heading narrow">
-          <p class="eyebrow">Why It Matters</p>
+          <p class="concept-overline">Why is this important?</p>
           <h2>Culture mixing exposes shortcuts that single-culture benchmarks can miss</h2>
         </div>
         <div class="concept-grid">
           <article class="concept-card">
+            <span class="concept-kicker">01</span>
             <h3>Dominant cue bias</h3>
             <p>
               Models often anchor on the most visually salient cue, such as a person’s appearance or a famous landmark,
@@ -112,6 +89,7 @@
             </p>
           </article>
           <article class="concept-card">
+            <span class="concept-kicker">02</span>
             <h3>Context sensitivity</h3>
             <p>
               The same food can receive different predictions depending on who is eating it or which environment appears
@@ -119,6 +97,7 @@
             </p>
           </article>
           <article class="concept-card">
+            <span class="concept-kicker">03</span>
             <h3>Resource asymmetry</h3>
             <p>
               High-resource cultures are typically more robust to perturbation, while low-resource cultures experience
@@ -126,26 +105,25 @@
             </p>
           </article>
         </div>
-        <div class="comparison-strip">
-          <div class="compare-card">
-            <span class="compare-label">Standard setup</span>
-            <p>Single cultural signal, easy context alignment, inflated confidence.</p>
-          </div>
-          <div class="compare-arrow" aria-hidden="true">→</div>
-          <div class="compare-card accent">
-            <span class="compare-label">CultureMix setup</span>
-            <p>Multiple cues co-exist, conflict, or shift. Shortcut reliance becomes visible.</p>
-          </div>
+      </section>
+
+      <section class="section-block" id="threads">
+        <div class="section-heading">
+          <p class="threads-overline">Our three papers ask one shared question</p>
+          <h2>When cultural cues conflict in one scene, which cue do models trust most?</h2>
+          <p>
+            Each paper isolates a different failure mode and reveals where multimodal models collapse under mixed-culture
+            context.
+          </p>
         </div>
+        <div class="paper-list" id="paper-list"></div>
       </section>
 
       <section class="section-block" id="gallery">
         <div class="section-heading">
-          <p class="eyebrow">Prompt Gallery</p>
-          <h2>Copy an image prompt and test your own model</h2>
+          <h2>Explore our dataset</h2>
           <p>
-            Switch between datasets and cue types. Each card includes the prompt, an image reference, and a ground-truth
-            cue so the section can be used both as a demo and a quick benchmark browser.
+            Click an image to enlarge.
           </p>
         </div>
 
@@ -154,12 +132,13 @@
           <div class="filter-row" id="filter-row" aria-label="Dataset filters"></div>
         </div>
 
-        <div class="gallery-grid" id="gallery-grid"></div>
+        <div class="gallery-strip-wrap" id="gallery-strip-wrap">
+          <div class="gallery-grid" id="gallery-grid"></div>
+        </div>
       </section>
 
       <section class="section-block section-emphasis" id="benchmarks">
         <div class="section-heading">
-          <p class="eyebrow">Benchmarks</p>
           <h2>How the three projects complement each other</h2>
           <p>
             The hub compares three benchmark construction strategies: ethnicity perturbation, geography perturbation,
@@ -172,7 +151,6 @@
 
       <section class="section-block" id="findings">
         <div class="section-heading">
-          <p class="eyebrow">Key Findings</p>
           <h2>Shared takeaways across the papers</h2>
         </div>
         <div class="findings-grid" id="findings-grid"></div>
@@ -180,12 +158,7 @@
 
       <section class="section-block resources-section" id="resources">
         <div class="section-heading">
-          <p class="eyebrow">Resources</p>
-          <h2>Papers, datasets, and citation-ready links</h2>
-          <p>
-            This page acts as an umbrella hub. Each thread retains its own paper identity, dataset, and evaluation
-            protocol.
-          </p>
+          <h2>Citations</h2>
         </div>
         <div class="resources-stack" id="resources-grid"></div>
       </section>
