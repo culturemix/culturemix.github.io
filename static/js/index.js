@@ -14,7 +14,10 @@ const papers = [
       "Shows notable drops once cultural backgrounds are introduced into otherwise recognizable food scenes.",
       "Studies model consistency and robustness strategies for reducing background sensitivity."
     ],
-    links: [{ label: "Paper", href: "https://arxiv.org/abs/2511.22787" }]
+    links: [
+      { label: "Paper", href: "https://arxiv.org/abs/2511.22787" },
+      { label: "Dataset", href: "https://huggingface.co/datasets/EunsuKim/CultureMix" }
+    ]
   },
   {
     index: "[2]",
@@ -37,7 +40,7 @@ const papers = [
     index: "[3]",
     paperClass: "ttk",
     fullTitle: "When Tom Eats Kimchi: Evaluating Cultural Bias of Multimodal Large Language Models in Cultural Mixture Contexts",
-    venue: "CL Workshop",
+    venue: "C3NLP Workshop",
     venueClass: "cl",
     topic: "Ethnicity Perturbation",
     description:
@@ -352,7 +355,7 @@ const benchmarkCards = [
   },
   {
     title: "MixCuBe",
-    venue: "CL Workshop",
+    venue: "C3NLP Workshop",
     stats: [
       { value: "2,475", label: "images" },
       { value: "5", label: "countries" },
@@ -746,7 +749,7 @@ function renderBenchmarks() {
         <article class="benchmark-card">
           <div class="benchmark-top">
             <h3>${item.title}</h3>
-            <span class="venue-badge ${item.venue === "CL Workshop" ? "cl" : "cvpr"}">${item.venue}</span>
+            <span class="venue-badge ${item.venue === "C3NLP Workshop" ? "cl" : "cvpr"}">${item.venue}</span>
           </div>
           <p>${item.bullets[0]}</p>
           <div class="benchmark-stats">
