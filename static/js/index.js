@@ -34,7 +34,10 @@ const papers = [
       "Compares robustness across multiple visual construction styles.",
       "Shows that cue conflict reliably destabilizes cultural recognition."
     ],
-    links: [{ label: "Paper", href: "https://arxiv.org/abs/2511.17004" }]
+    links: [
+      { label: "Paper", href: "https://arxiv.org/abs/2511.17004" },
+      { label: "Dataset", href: "https://huggingface.co/datasets/patrickamadeus/vlms-are-confused-tourists" }
+    ]
   },
   {
     index: "[3]",
