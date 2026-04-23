@@ -469,6 +469,7 @@ button {
 }
 
 .paper-card {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 190px;
   gap: 20px;
@@ -480,6 +481,12 @@ button {
   opacity: 0;
   transform: translateY(16px);
   transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.venue-badge-floating {
+  position: absolute;
+  top: 14px;
+  right: 14px;
 }
 
 .paper-card.is-visible {
@@ -501,6 +508,10 @@ button {
   line-height: 1.35;
 }
 
+.paper-main .topic-stack {
+  margin-bottom: 12px;
+}
+
 .paper-title-highlight {
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
@@ -513,6 +524,8 @@ button {
 .ground-truth-pill {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 0.76rem;
@@ -546,6 +559,35 @@ button {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.topic-stack {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.topic-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3px;
+  text-align: left;
+}
+
+.topic-row .topic-pill {
+  margin: 0 2px 2px 0;
+}
+
+.topic-label {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #64748b;
 }
 
 .topic-pill {

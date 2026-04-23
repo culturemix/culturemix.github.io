@@ -5,7 +5,8 @@ const papers = [
     fullTitle: "World in a Frame: Understanding Culture Mixing as a New Challenge for Vision-Language Models",
     venue: "CVPR 2026",
     venueClass: "cvpr",
-    topic: "Food VQA",
+    target: "Food",
+    perturbation: "Food, Background",
     description:
       "Introduces CultureMix, a food-centric benchmark for studying how LVLMs behave when cultural food cues are mixed with conflicting context.",
     bullets: [
@@ -25,7 +26,8 @@ const papers = [
     fullTitle: "Vision Language Models are Confused Tourists",
     venue: "CVPR 2026",
     venueClass: "cvpr",
-    topic: "Culture Perturbation",
+    target: "Food, Attire, Instrument",
+    perturbation: "Landmark, Flag",
     description:
       "Builds a cultural adversarial robustness suite that reveals how VLMs misread cuisine, attire, and instruments under mixed geographic context.",
     bullets: [
@@ -45,7 +47,8 @@ const papers = [
     fullTitle: "When Tom Eats Kimchi: Evaluating Cultural Bias of Multimodal Large Language Models in Cultural Mixture Contexts",
     venue: "C3NLP Workshop",
     venueClass: "cl",
-    topic: "Ethnicity Perturbation",
+    target: "Food, Attire, Festival",
+    perturbation: "Ethnicity",
     description:
       "Introduces MixCuBe, a cross-cultural bias benchmark focused on how the depicted person shifts MLLM recognition of food and related cultural markers.",
     bullets: [
@@ -438,6 +441,15 @@ const state = {
 
 let heroTimer = null;
 
+function renderTopicPills(value) {
+  return String(value || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .map((item) => `<span class="topic-pill">${item}</span>`)
+    .join("");
+}
+
 function renderHeroExamples() {
   const track = document.getElementById("hero-carousel-track");
   if (!track) return;
@@ -487,10 +499,20 @@ function renderPapers() {
     .map(
       (paper) => `
         <article class="paper-card paper-${paper.paperClass || "wif"} reveal-card">
+          <span class="venue-badge venue-badge-floating ${paper.venueClass}">${paper.venue}</span>
           <div class="paper-main">
             <div class="paper-title-row">
               <h3><span class="paper-title-highlight">${paper.fullTitle}</span></h3>
-              <span class="venue-badge ${paper.venueClass}">${paper.venue}</span>
+            </div>
+            <div class="topic-stack" aria-label="Target and perturbation topics">
+              <div class="topic-row">
+                <span class="topic-label">Target</span>
+                ${renderTopicPills(paper.target)}
+              </div>
+              <div class="topic-row">
+                <span class="topic-label">Perturbation</span>
+                ${renderTopicPills(paper.perturbation)}
+              </div>
             </div>
             <div class="paper-meta">
               <p>${paper.description}</p>
@@ -500,7 +522,6 @@ function renderPapers() {
             </div>
           </div>
           <div class="paper-side">
-            <span class="topic-pill">${paper.topic}</span>
             <div class="paper-links">
               ${paper.links
                 .map((link) => `<a href="${link.href}" target="_blank" rel="noopener noreferrer">${link.label}</a>`)
