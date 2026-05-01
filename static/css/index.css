@@ -988,6 +988,68 @@ button {
   line-height: 1.35;
 }
 
+.mixcube-lineage-card {
+  flex: 0 0 min(460px, calc(100vw - 48px));
+  max-width: 480px;
+}
+
+.mixcube-lineage-content {
+  display: grid;
+  gap: 12px;
+}
+
+.mixcube-original-block,
+.mixcube-variant-block {
+  display: grid;
+  gap: 8px;
+}
+
+.mixcube-original-block strong,
+.mixcube-variant-block strong {
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+.mixcube-original-image,
+.mixcube-variant-image {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  background-position: center;
+  background-size: cover;
+  cursor: zoom-in;
+}
+
+.mixcube-original-image {
+  height: 220px;
+  border-radius: 10px;
+}
+
+.mixcube-variant-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.mixcube-variant {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.mixcube-variant-image {
+  height: 76px;
+  border-radius: 8px;
+}
+
+.mixcube-variant span {
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
 .image-lightbox {
   position: fixed;
   inset: 0;

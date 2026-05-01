@@ -94,6 +94,9 @@ const heroExamples = [
 const seedLineageGroups =
   typeof __WIF_SEED_LINEAGE__ !== "undefined" && Array.isArray(__WIF_SEED_LINEAGE__) ? __WIF_SEED_LINEAGE__ : [];
 
+const mixcubeGroups =
+  typeof __MIXCUBE_GROUPS__ !== "undefined" && Array.isArray(__MIXCUBE_GROUPS__) ? __MIXCUBE_GROUPS__ : [];
+
 const galleryDatasets = [
   {
     id: "world-in-a-frame",
@@ -232,99 +235,9 @@ const galleryDatasets = [
   {
     id: "mixcube",
     label: "MixCuBe",
-    filters: ["All", "Food", "Clothing", "Place", "Country", "Ethnicity"],
-    examples: [
-      {
-        title: "Kimchi with identity perturbation",
-        filter: "Ethnicity",
-        prompt:
-          "A portrait-style image of an African man eating kimchi with chopsticks at a plain table, shot so the kimchi remains sharp and visually central.",
-        imageRef: "static/images/carousel3.jpg",
-        groundTruth: "Korean kimchi",
-        tags: ["food", "ethnicity"]
-      },
-      {
-        title: "Sushi with alternate diner",
-        filter: "Food",
-        prompt:
-          "A close-up of sushi held by a white female diner in a neutral indoor environment with soft lighting and minimal background distraction.",
-        imageRef: "static/images/carousel1.jpg",
-        groundTruth: "Japanese sushi",
-        tags: ["food", "diner cue"]
-      },
-      {
-        title: "Bibimbap with diner ethnicity swap",
-        filter: "Food",
-        prompt:
-          "Korean bibimbap in a stone bowl as the focal dish, with a diner whose appearance does not match typical Korean representation in stock imagery.",
-        imageRef: "static/images/carousel2.jpg",
-        groundTruth: "Korean bibimbap",
-        tags: ["food", "representation"]
-      },
-      {
-        title: "Thai outfit with Turkish dish",
-        filter: "Clothing",
-        prompt:
-          "A person wearing a traditional Thai outfit while holding a Turkish dish, photographed in a simple studio scene to isolate clothing and food signals.",
-        imageRef: "static/images/carousel2.jpg",
-        groundTruth: "Thai attire / Turkish dish",
-        tags: ["clothing", "food"]
-      },
-      {
-        title: "Kimono with Italian pasta plate",
-        filter: "Clothing",
-        prompt:
-          "A model in formal Japanese kimono seated with a plate of spaghetti carbonara in frame, both elements clearly visible.",
-        imageRef: "static/images/carousel3.jpg",
-        groundTruth: "Japanese kimono + Italian pasta",
-        tags: ["clothing", "food"]
-      },
-      {
-        title: "Sari with English afternoon tea",
-        filter: "Clothing",
-        prompt:
-          "Indian sari in bright silk, beside a tiered stand of scones and tea cups suggesting British afternoon tea.",
-        imageRef: "static/images/carousel1.jpg",
-        groundTruth: "Indian sari",
-        tags: ["clothing", "place ritual"]
-      },
-      {
-        title: "Croissant with East Asian street signage",
-        filter: "Place",
-        prompt:
-          "A French croissant in sharp focus with blurred Hangul signage and Seoul-style storefronts in the background.",
-        imageRef: "static/images/carousel4.jpg",
-        groundTruth: "French croissant",
-        tags: ["food", "place cue"]
-      },
-      {
-        title: "Tacos with Japanese tatami corner",
-        filter: "Place",
-        prompt:
-          "Mexican tacos on a wooden board, placed on tatami and low table with shoji light patterns suggesting Japan.",
-        imageRef: "static/images/carousel1.jpg",
-        groundTruth: "Mexican tacos",
-        tags: ["food", "interior place"]
-      },
-      {
-        title: "Jollof with mismatched diner prior",
-        filter: "Country",
-        prompt:
-          "A plate of jollof rice shown with a diner whose ethnicity does not match common web priors for the dish, keeping the image composition realistic and balanced.",
-        imageRef: "static/images/carousel4.jpg",
-        groundTruth: "West African jollof rice",
-        tags: ["country", "jollof"]
-      },
-      {
-        title: "Peking duck with Nordic diner",
-        filter: "Country",
-        prompt:
-          "Peking duck carved at table, with a blonde diner in Scandinavian casual dress as the main human subject beside the dish.",
-        imageRef: "static/images/carousel2.jpg",
-        groundTruth: "Chinese Peking duck",
-        tags: ["country", "food identity"]
-      }
-    ]
+    filters: ["All", "Food", "Clothing", "Festivals"],
+    layout: "ethnicity-lineage",
+    examples: mixcubeGroups
   }
 ];
 
@@ -648,6 +561,61 @@ function renderGallery() {
               </div>`
                   : ""
               }
+            </div>
+          </article>
+        `
+      )
+      .join("");
+    const strip = document.getElementById("gallery-strip-wrap");
+    if (strip) strip.scrollLeft = 0;
+    return;
+  }
+
+  if (dataset.layout === "ethnicity-lineage") {
+    const visible = dataset.examples.filter((group) => state.filter === "All" || group.filter === state.filter);
+    grid.innerHTML = visible
+      .map(
+        (group) => `
+          <article class="gallery-card mixcube-lineage-card">
+            <div class="gallery-content mixcube-lineage-content">
+              <div class="gallery-head">
+                <h3>${group.title}</h3>
+              </div>
+              <p class="gallery-culture-lines">
+                <span class="culture-label">Country:</span> ${group.country || ""}
+                <br><span class="culture-label">Category:</span> ${group.filter || ""}
+              </p>
+              <div class="mixcube-original-block">
+                <strong>${group.original?.label || "Original"}</strong>
+                <button
+                  class="mixcube-original-image"
+                  type="button"
+                  data-zoom-src="${escapeAttribute(group.original?.imageRef || "")}"
+                  data-zoom-caption="${escapeAttribute(`${group.title} - Original - ${group.country || ""}`)}"
+                  style="background-image: url('${group.original?.imageRef || ""}')"
+                ></button>
+              </div>
+              <div class="mixcube-variant-block">
+                <strong>Ethnicity-altered variants</strong>
+                <div class="mixcube-variant-grid">
+                  ${(group.variants || [])
+                    .map(
+                      (variant) => `
+                        <div class="mixcube-variant">
+                          <button
+                            class="mixcube-variant-image"
+                            type="button"
+                            data-zoom-src="${escapeAttribute(variant.imageRef || "")}"
+                            data-zoom-caption="${escapeAttribute(`${group.title} - ${variant.ethnicity || "Variant"} - ${group.country || ""}`)}"
+                            style="background-image: url('${variant.imageRef || ""}')"
+                          ></button>
+                          <span>${variant.ethnicity || "Variant"}</span>
+                        </div>
+                      `
+                    )
+                    .join("")}
+                </div>
+              </div>
             </div>
           </article>
         `
