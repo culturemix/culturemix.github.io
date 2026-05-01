@@ -243,48 +243,54 @@ const galleryDatasets = [
 
 const benchmarkCards = [
   {
-    title: "World in a Frame / CultureMix",
+    paperClass: "wif",
+    title: "World in a Frame",
     venue: "CVPR 2026",
+    venueClass: "cvpr",
     stats: [
-      { value: "23,031", label: "benchmark rows" },
-      { value: "4", label: "food-mixing subtasks" },
-      { value: "10", label: "LVLMs evaluated" },
-      { value: "Context-heavy", label: "failure pattern" }
+      { value: "23,031", label: "Examples" },
+      { value: "Food", label: "Target" },
+      { value: "Food + Background", label: "Perturbation" },
+      { value: "Background sensitivity", label: "Failure pattern" }
     ],
     bullets: [
-      "Targets food VQA under mixed-context scenes.",
+      "Targets food recognition in mixed-context scenes.",
       "Uses diffusion-generated, human-verified images.",
       "Measures how background and co-occurring food cues shift predictions."
     ]
   },
   {
-    title: "Confused Tourist",
+    paperClass: "ct",
+    title: "Confused Tourists",
     venue: "CVPR 2026",
+    venueClass: "cvpr",
     stats: [
-      { value: "5,451", label: "examples" },
-      { value: "3", label: "domains" },
-      { value: "Cuisine · Attire · Instruments", label: "categories" },
-      { value: "Mixed cues", label: "stress style" }
+      { value: "5,451", label: "Examples" },
+      { value: "Food · Attire · Instruments", label: "Target" },
+      { value: "Landmark + Flag", label: "Perturbation" },
+      { value: "Geography cue conflict", label: "Failure pattern" }
     ],
     bullets: [
-      "Focuses on cuisine, attire, and musical instruments.",
-      "Evaluates recognition under culturally mixed visual settings.",
-      "Shows that cue conflict destabilizes cultural identification."
+      "Targets cuisine, attire, and musical instruments.",
+      "Uses landmark and flag perturbations to stress geographic cues.",
+      "Measures how conflicting place signals destabilize cultural identification."
     ]
   },
   {
-    title: "MixCuBe",
+    paperClass: "ttk",
+    title: "When Tom Eats Kimchi",
     venue: "C3NLP Workshop",
+    venueClass: "cl",
     stats: [
-      { value: "2,475", label: "images" },
-      { value: "5", label: "countries" },
-      { value: "4", label: "ethnicities" },
-      { value: "58%", label: "reported max gap" }
+      { value: "2,475", label: "Examples" },
+      { value: "Food · Attire · Festivals", label: "Target" },
+      { value: "Ethnicity", label: "Perturbation" },
+      { value: "Person-cue overreach", label: "Failure pattern" }
     ],
     bullets: [
-      "Examines person-food cultural mixtures.",
-      "Uses ethnicity perturbations to stress-test recognition.",
-      "Shows larger robustness gaps for low-resource cultures."
+      "Targets food, clothing, and festival recognition.",
+      "Uses ethnicity perturbations on the depicted person.",
+      "Measures how person appearance overrides the cultural item, with larger gaps for low-resource cultures."
     ]
   }
 ];
@@ -345,6 +351,47 @@ const resources = [
 }`
   }
 ];
+
+const mainContributors = [
+  {
+    name: "Eunsu Kim",
+    affiliation: "KAIST",
+    profile: "https://eunsu-k1m.github.io/",
+    photo: "static/images/contributors/eunsu.jpg"
+  },
+  {
+    name: "Ikhlasul Hanif",
+    affiliation: "MBZUAI",
+    profile: null,
+    photo: null
+  },
+  {
+    name: "Jun Seong Kim",
+    affiliation: "KAIST",
+    profile: null,
+    photo: null
+  },
+  {
+    name: "Junyeong Park",
+    affiliation: "KAIST",
+    profile: null,
+    photo: null
+  },
+  {
+    name: "Muhammad Dehan",
+    affiliation: "MBZUAI",
+    profile: null,
+    photo: null
+  },
+  {
+    name: "Patrick Amadeus Irawan",
+    affiliation: "MBZUAI",
+    profile: null,
+    photo: null
+  }
+];
+
+const otherContributors = [];
 
 const state = {
   datasetId: galleryDatasets[0].id,
@@ -738,19 +785,18 @@ function renderBenchmarks() {
   grid.innerHTML = benchmarkCards
     .map(
       (item) => `
-        <article class="benchmark-card">
+        <article class="benchmark-card paper-${item.paperClass || "wif"}">
           <div class="benchmark-top">
-            <h3>${item.title}</h3>
-            <span class="venue-badge ${item.venue === "C3NLP Workshop" ? "cl" : "cvpr"}">${item.venue}</span>
+            <h3><span class="paper-title-highlight">${item.title}</span></h3>
+            <span class="venue-badge ${item.venueClass || "cvpr"}">${item.venue}</span>
           </div>
-          <p>${item.bullets[0]}</p>
           <div class="benchmark-stats">
             ${item.stats
               .map(
                 (stat) => `
                   <div class="benchmark-stat">
-                    <strong>${stat.value}</strong>
-                    <span>${stat.label}</span>
+                    <span class="benchmark-stat-label">${stat.label}</span>
+                    <strong class="benchmark-stat-value">${stat.value}</strong>
                   </div>
                 `
               )
@@ -804,6 +850,57 @@ function renderResources() {
       `
     )
     .join("");
+}
+
+function getContributorInitials(name) {
+  const parts = String(name || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (!parts.length) return "?";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function getContributorHue(name) {
+  const text = String(name || "");
+  let hash = 0;
+  for (let i = 0; i < text.length; i += 1) {
+    hash = (hash * 31 + text.charCodeAt(i)) % 360;
+  }
+  return hash;
+}
+
+function renderContributorCard(contributor) {
+  const name = contributor.name || "";
+  const affiliation = contributor.affiliation ? `<span class="contributor-affiliation">${contributor.affiliation}</span>` : "";
+  const initials = getContributorInitials(name);
+  const hue = getContributorHue(name);
+  const avatar = contributor.photo
+    ? `<img class="contributor-avatar contributor-avatar-photo" src="${escapeAttribute(contributor.photo)}" alt="${escapeAttribute(name)}" loading="lazy">`
+    : `<span class="contributor-avatar contributor-avatar-initials" style="--avatar-hue:${hue}" aria-hidden="true">${initials}</span>`;
+  const inner = `${avatar}<span class="contributor-name">${name}</span>${affiliation}`;
+  if (contributor.profile) {
+    return `<a class="contributor-card is-linked" href="${escapeAttribute(contributor.profile)}" target="_blank" rel="noopener noreferrer">${inner}</a>`;
+  }
+  return `<div class="contributor-card">${inner}</div>`;
+}
+
+function renderContributors() {
+  const mainGrid = document.getElementById("contributors-main-grid");
+  if (mainGrid) {
+    const sorted = [...mainContributors].sort((a, b) => a.name.localeCompare(b.name));
+    mainGrid.innerHTML = sorted.map(renderContributorCard).join("");
+  }
+  const otherGrid = document.getElementById("contributors-other-grid");
+  if (otherGrid) {
+    if (!otherContributors.length) {
+      otherGrid.innerHTML = `<p class="contributors-empty">To be announced.</p>`;
+    } else {
+      const sorted = [...otherContributors].sort((a, b) => a.name.localeCompare(b.name));
+      otherGrid.innerHTML = sorted.map(renderContributorCard).join("");
+    }
+  }
 }
 
 function getEvaluationCategory(example) {
@@ -969,6 +1066,7 @@ function init() {
   renderBenchmarks();
   renderFindings();
   renderResources();
+  renderContributors();
   attachInteractions();
   initGalleryStripDrag();
   setupReveal();

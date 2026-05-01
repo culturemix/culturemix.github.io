@@ -628,17 +628,20 @@ button {
 }
 
 .paper-card.paper-wif .paper-title-highlight,
-.resource-card.paper-wif .paper-title-highlight {
+.resource-card.paper-wif .paper-title-highlight,
+.benchmark-card.paper-wif .paper-title-highlight {
   background-image: linear-gradient(transparent 60%, rgba(39, 77, 120, 0.25) 0);
 }
 
 .paper-card.paper-ct .paper-title-highlight,
-.resource-card.paper-ct .paper-title-highlight {
+.resource-card.paper-ct .paper-title-highlight,
+.benchmark-card.paper-ct .paper-title-highlight {
   background-image: linear-gradient(transparent 60%, rgba(76, 63, 120, 0.25) 0);
 }
 
 .paper-card.paper-ttk .paper-title-highlight,
-.resource-card.paper-ttk .paper-title-highlight {
+.resource-card.paper-ttk .paper-title-highlight,
+.benchmark-card.paper-ttk .paper-title-highlight {
   background-image: linear-gradient(transparent 60%, rgba(43, 95, 98, 0.26) 0);
 }
 
@@ -1218,14 +1221,28 @@ button {
 }
 
 .benchmark-stat {
-  padding: 12px;
+  padding: 10px 12px;
   border-radius: var(--border-radius);
   background: var(--background-secondary);
+  border: 1px solid var(--border-color);
 }
 
-.benchmark-stat strong {
+.benchmark-stat-label {
   display: block;
-  font-size: 1.04rem;
+  margin-bottom: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.benchmark-stat-value {
+  display: block;
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
 }
 
 .benchmark-list {
@@ -1323,6 +1340,109 @@ button {
   min-height: 220px;
 }
 
+.contributors-section {
+  background: var(--background-secondary);
+}
+
+.contributors-block + .contributors-block {
+  margin-top: 26px;
+}
+
+.contributors-subheading {
+  margin: 0 0 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #475569;
+}
+
+.contributors-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.contributors-grid-compact {
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+
+.contributor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  color: var(--text-primary);
+  transition: var(--transition);
+}
+
+.contributor-card.is-linked:hover {
+  transform: translateY(-2px);
+  border-color: rgba(37, 99, 235, 0.4);
+  box-shadow: var(--shadow-md);
+}
+
+.contributor-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: 0 0 auto;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--avatar-hue, 210), 55%, 48%) 0%,
+    hsl(calc(var(--avatar-hue, 210) + 30), 55%, 38%) 100%
+  );
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.contributor-avatar-photo {
+  background: var(--background-accent);
+  object-fit: cover;
+}
+
+img.contributor-avatar-photo {
+  width: 64px;
+  height: 64px;
+}
+
+.contributor-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+.contributor-affiliation {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.contributors-empty {
+  margin: 0;
+  padding: 16px;
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
 @media (max-width: 1040px) {
   .paper-card,
   .resource-card {
@@ -1343,6 +1463,10 @@ button {
 
   .hero-paper-links {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .contributors-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -1399,5 +1523,9 @@ button {
 
   .paper-links {
     margin-top: 0;
+  }
+
+  .contributors-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
