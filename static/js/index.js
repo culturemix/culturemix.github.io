@@ -111,124 +111,184 @@ const galleryDatasets = [
     filters: ["All", "Cuisine", "Attire", "Instruments"],
     examples: [
       {
-        title: "Soto with Japanese travel cues",
+        title: "Qorma with Buenos Aires landmark cues",
         filter: "Cuisine",
         prompt:
-          "A bowl of Indonesian soto presented as the focal dish in a polished travel-photo composition, while the surrounding scene suggests Japan rather than Indonesia.",
-        imageRef: "static/images/gallery/vlm_tourist/soto_japan.jpeg",
+          "A bowl of Afghan qorma is framed as the main subject while the travel-photo setting around it points to Argentina, with Buenos Aires cues pulling the model away from Afghanistan.",
+        imageRef: "static/images/gallery/vlm_tourist/qorma_argentina.jpeg",
+        groundTruthCountry: "Afghanistan",
+        predictedCountry: "Argentina",
+        groundTruthItem: "Qorma",
+        predictedItem: "Sorrentinos",
+        tags: ["cuisine", "flag_landmark"]
+      },
+      {
+        title: "Asado with Great Wall travel cues",
+        filter: "Cuisine",
+        prompt:
+          "Argentine asado remains visually central, but the surrounding composition introduces Chinese destination cues through the Great Wall setting and flag placement.",
+        imageRef: "static/images/gallery/vlm_tourist/asado_china.jpeg",
+        groundTruthCountry: "Argentina",
+        predictedCountry: "China",
+        groundTruthItem: "Asado",
+        predictedItem: "糖醋排骨 (Tangcu Paigu)",
+        tags: ["cuisine", "flag_landmark"]
+      },
+      {
+        title: "Feijoada with Philippine rice-terrace cues",
+        filter: "Cuisine",
+        prompt:
+          "A plate of Brazilian feijoada is kept in sharp focus while Banaue Rice Terraces and Philippine travel cues reshape the scene's cultural signal.",
+        imageRef: "static/images/gallery/vlm_tourist/feijoada_philippines.jpeg",
+        groundTruthCountry: "Brazil",
+        predictedCountry: "Philippines",
+        groundTruthItem: "Feijoada",
+        predictedItem: "Adobo (Adobong Manok)",
+        tags: ["cuisine", "flag_landmark"]
+      },
+      {
+        title: "Goulash with New Zealand skyline cues",
+        filter: "Cuisine",
+        prompt:
+          "Czech goulash sits in the foreground, but the travel-image framing layers in New Zealand symbols and a Sky Tower backdrop that redirect the model elsewhere.",
+        imageRef: "static/images/gallery/vlm_tourist/goulash_new_zealand.jpeg",
+        groundTruthCountry: "Czechia",
+        predictedCountry: "New Zealand",
+        groundTruthItem: "Goulash",
+        predictedItem: "Hokey pokey (honeycomb toffee)",
+        tags: ["cuisine", "flag_landmark"]
+      },
+      {
+        title: "Soto ayam with Tokyo Tower cues",
+        filter: "Cuisine",
+        prompt:
+          "An Indonesian bowl of soto ayam anchors the composition, yet the room styling and Tokyo Tower skyline push the model toward a Japanese reading.",
+        imageRef: "static/images/gallery/vlm_tourist/soto_ayam_japan.jpeg",
         groundTruthCountry: "Indonesia",
         predictedCountry: "Japan",
-        groundTruthItem: "Soto",
+        groundTruthItem: "Soto Ayam",
         predictedItem: "Ramen",
-        tags: ["cuisine", "place conflict"]
+        tags: ["cuisine", "flag_landmark"]
       },
       {
-        title: "Borscht with Spanish destination cues",
-        filter: "Cuisine",
-        prompt:
-          "A travel-style image centered on borscht, with the food remaining visually dominant while the broader composition suggests Spain rather than its expected cultural origin.",
-        imageRef: "static/images/gallery/vlm_tourist/borscht_spain.jpeg",
-        groundTruthCountry: "Russia",
-        predictedCountry: "Spain",
-        groundTruthItem: "Borscht",
-        predictedItem: "Gazpacho",
-        tags: ["cuisine", "stacked framing"]
-      },
-      {
-        title: "Kozhukh with Romanian street cues",
+        title: "Kroj with Buenos Aires street cues",
         filter: "Attire",
         prompt:
-          "A plated serving of kozhukh as the clear subject, photographed in a street scene where signage and architecture imply Romania rather than the dish's expected origin.",
-        imageRef: "static/images/gallery/vlm_tourist/kozukh_romania.jpeg",
-        groundTruthCountry: "Ukraine",
-        predictedCountry: "Romania",
-        groundTruthItem: "Kozhukh",
-        predictedItem: "Cojoc",
-        tags: ["cuisine", "street context"]
+          "A traditional Czech kroj outfit is isolated in the foreground while the plaza scene and Obelisco de Buenos Aires cues suggest Argentina instead.",
+        imageRef: "static/images/gallery/vlm_tourist/kroj_argentina.jpeg",
+        groundTruthCountry: "Czechia",
+        predictedCountry: "Argentina",
+        groundTruthItem: "Kroj",
+        predictedItem: "Traje de gaucho",
+        tags: ["attire", "flag_landmark"]
       },
       {
-        title: "Tacos with European plaza backdrop",
-        filter: "Cuisine",
-        prompt:
-          "Mexican street tacos on a metal tray, shot so the food is sharp while the plaza and facades behind suggest a European city rather than Mexico.",
-        imageRef: "static/images/carousel4.jpg",
-        groundTruthCountry: "",
-        predictedCountry: "",
-        groundTruthItem: "Mexican tacos",
-        predictedItem: "",
-        tags: ["cuisine", "architecture cue"]
-      },
-      {
-        title: "Hanbok with non-Korean scene cues",
+        title: "Isiagu with DR Congo landmark cues",
         filter: "Attire",
         prompt:
-          "A full-body fashion photo of a model wearing a Korean hanbok while the broader scene introduces cues associated with another country.",
-        imageRef: "static/images/carousel3.jpg",
-        groundTruthCountry: "",
-        predictedCountry: "",
-        groundTruthItem: "Korean hanbok",
-        predictedItem: "",
-        tags: ["attire", "scene mismatch"]
+          "A Nigerian isiagu top is photographed as the main subject, but the paired flag and Inga Dam setting pull the composition toward DR Congo.",
+        imageRef: "static/images/gallery/vlm_tourist/isiagu_dr_congo.jpeg",
+        groundTruthCountry: "Nigeria",
+        predictedCountry: "Democratic Republic of the Congo",
+        groundTruthItem: "Isiagu",
+        predictedItem: "Abacost",
+        tags: ["attire", "flag_landmark"]
       },
       {
-        title: "Sari with desert landmark backdrop",
+        title: "Maria Clara gown with South African mountain cues",
         filter: "Attire",
         prompt:
-          "A woman in a vivid Indian sari, framed against sandstone monuments and heat haze more typical of the Middle East than the Indian subcontinent.",
-        imageRef: "static/images/carousel2.jpg",
-        groundTruthCountry: "",
-        predictedCountry: "",
-        groundTruthItem: "Indian sari",
-        predictedItem: "",
-        tags: ["attire", "landmark confusion"]
+          "The Filipino Maria Clara gown stays centered while Table Mountain and South African travel cues dominate the surrounding visual narrative.",
+        imageRef: "static/images/gallery/vlm_tourist/maria_clara_gown_south_africa.jpeg",
+        groundTruthCountry: "Philippines",
+        predictedCountry: "South Africa",
+        groundTruthItem: "Maria Clara Gown",
+        predictedItem: "Umbhaco",
+        tags: ["attire", "flag_landmark"]
       },
       {
-        title: "Kilt with Mediterranean harbor",
+        title: "Liqui liqui with Borobudur travel cues",
         filter: "Attire",
         prompt:
-          "Scottish kilt outfit in focus, posed on a waterfront with pastel buildings and boats that read as Mediterranean rather than Scotland.",
-        imageRef: "static/images/carousel4.jpg",
-        groundTruthCountry: "",
-        predictedCountry: "",
-        groundTruthItem: "Scottish kilt",
-        predictedItem: "",
-        tags: ["attire", "harbor context"]
+          "A Venezuelan liqui liqui suit is shown front and center, but Borobudur and Indonesian scene cues create a different cultural destination signal.",
+        imageRef: "static/images/gallery/vlm_tourist/liqui_liqui_indonesia.jpeg",
+        groundTruthCountry: "Venezuela",
+        predictedCountry: "Indonesia",
+        groundTruthItem: "Liqui Liqui",
+        predictedItem: "Jas tutup",
+        tags: ["attire", "flag_landmark"]
       },
       {
-        title: "Sitar with non-Indian studio props",
+        title: "Ao tu than with Lalibela church cues",
+        filter: "Attire",
+        prompt:
+          "Vietnamese ao tu than attire remains the focal garment while the landmark background points strongly toward Ethiopia through Lalibela church imagery.",
+        imageRef: "static/images/gallery/vlm_tourist/ao_tu_than_ethiopia.jpeg",
+        groundTruthCountry: "Vietnam",
+        predictedCountry: "Ethiopia",
+        groundTruthItem: "Ao Tu Than",
+        predictedItem: "Habesha Kemis",
+        tags: ["attire", "flag_landmark"]
+      },
+      {
+        title: "Shakuhachi with Brandenburg Gate cues",
         filter: "Instruments",
         prompt:
-          "A traditional sitar presented in a clean studio-style composition while surrounding context implies a different geographic origin than the instrument itself.",
-        imageRef: "static/images/carousel4.jpg",
-        groundTruthCountry: "",
-        predictedCountry: "",
-        groundTruthItem: "Indian sitar",
-        predictedItem: "",
-        tags: ["instrument", "prop conflict"]
+          "A Japanese shakuhachi is staged as the focal instrument, but German landmark and flag cues steer the scene toward a European interpretation.",
+        imageRef: "static/images/gallery/vlm_tourist/shakuhachi_germany.jpeg",
+        groundTruthCountry: "Japan",
+        predictedCountry: "Germany",
+        groundTruthItem: "Shakuhachi",
+        predictedItem: "Blockflöte (recorder)",
+        tags: ["instrument", "flag_landmark"]
       },
       {
-        title: "Bagpipes with tropical foliage",
+        title: "Vihuela with Caracas cathedral cues",
         filter: "Instruments",
         prompt:
-          "Highland bagpipes held by a musician, with lush tropical plants and bright sun in the background inconsistent with Scottish Highlands imagery.",
-        imageRef: "static/images/carousel1.jpg",
-        groundTruthCountry: "",
-        predictedCountry: "",
-        groundTruthItem: "Scottish bagpipes",
-        predictedItem: "",
-        tags: ["instrument", "vegetation cue"]
+          "The mariachi vihuela remains prominent in the frame while Venezuelan flag cues and Caracas Cathedral reshape the model's geographic guess.",
+        imageRef: "static/images/gallery/vlm_tourist/vihuela_venezuela.jpeg",
+        groundTruthCountry: "Mexico",
+        predictedCountry: "Venezuela",
+        groundTruthItem: "Mariachi Guitar (Vihuela)",
+        predictedItem: "Cuatro venezolano",
+        tags: ["instrument", "flag_landmark"]
       },
       {
-        title: "Taiko drum in a Gothic hall",
+        title: "Janggu with Buenos Aires monument cues",
         filter: "Instruments",
         prompt:
-          "Japanese taiko drums on stands, photographed in a stone Gothic interior that clashes with typical festival or shrine settings for this instrument.",
-        imageRef: "static/images/carousel2.jpg",
-        groundTruthCountry: "",
-        predictedCountry: "",
-        groundTruthItem: "Japanese taiko",
-        predictedItem: "",
-        tags: ["instrument", "architecture"]
+          "A Korean janggu drum is photographed against Argentine travel cues, with the Obelisco de Buenos Aires and flag combination overpowering the original context.",
+        imageRef: "static/images/gallery/vlm_tourist/janggu_argentina.jpeg",
+        groundTruthCountry: "South Korea",
+        predictedCountry: "Argentina",
+        groundTruthItem: "Janggu",
+        predictedItem: "Bombo legüero",
+        tags: ["instrument", "flag_landmark"]
+      },
+      {
+        title: "Bombarde with Brandenburg Gate cues",
+        filter: "Instruments",
+        prompt:
+          "A French bombarde is presented with Germany-specific landmark and flag cues, inviting the model to reinterpret the instrument's origin.",
+        imageRef: "static/images/gallery/vlm_tourist/bombarde_germany.jpeg",
+        groundTruthCountry: "France",
+        predictedCountry: "Germany",
+        groundTruthItem: "Bombarde",
+        predictedItem: "Heckelphone",
+        tags: ["instrument", "flag_landmark"]
+      },
+      {
+        title: "Haegeum with Mount Fuji cues",
+        filter: "Instruments",
+        prompt:
+          "A Korean haegeum stays visually dominant, but Mount Fuji and Japanese flag cues create a strong competing signal for the model.",
+        imageRef: "static/images/gallery/vlm_tourist/haegeum_japan.jpeg",
+        groundTruthCountry: "South Korea",
+        predictedCountry: "Japan",
+        groundTruthItem: "Haegeum",
+        predictedItem: "Shamisen",
+        tags: ["instrument", "flag_landmark"]
       }
     ]
   },
@@ -689,7 +749,7 @@ function renderGallery() {
           </div>
           <div class="gallery-content">
             <div class="gallery-head">
-              <h3>${example.title}</h3>
+              ${dataset.id === "confused-tourist" ? "" : `<h3>${example.title}</h3>`}
               ${
                 dataset.id === "confused-tourist"
                   ? `<button
@@ -709,7 +769,11 @@ function renderGallery() {
                 : ""
             }
             ${example.description ? `<p class="gallery-description">${example.description}</p>` : ""}
-            <p class="gallery-prompt">${example.prompt}</p>
+            ${
+              dataset.id === "confused-tourist"
+                ? ""
+                : `<p class="gallery-prompt">${example.prompt}</p>`
+            }
             ${
               dataset.id === "confused-tourist"
                 ? `<div class="tourist-eval-grid">
