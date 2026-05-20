@@ -31,7 +31,7 @@ const papers = [
     description:
       "Builds a cultural adversarial robustness suite that reveals how VLMs misread cuisine, attire, and instruments under mixed geographic context.",
     bullets: [
-      "Introduces 5,451 examples spanning cuisine, attire, and musical instruments.",
+      "Introduces 5,451 samples spanning cuisine, attire, and musical instruments.",
       "Measures failures under culturally mixed settings created through context-aware perturbations.",
       "Compares robustness across multiple visual construction styles.",
       "Shows that cue conflict reliably destabilizes cultural recognition."
@@ -307,16 +307,12 @@ const benchmarkCards = [
     title: "World in a Frame",
     venue: "CVPR 2026",
     venueClass: "cvpr",
+    paperHref: "https://arxiv.org/abs/2511.22787",
     stats: [
-      { value: "23,031", label: "Examples" },
+      { value: "23,031", label: "Samples" },
       { value: "Food", label: "Target" },
       { value: "Food + Background", label: "Perturbation" },
       { value: "Background sensitivity", label: "Failure pattern" }
-    ],
-    bullets: [
-      "Targets food recognition in mixed-context scenes.",
-      "Uses diffusion-generated, human-verified images.",
-      "Measures how background and co-occurring food cues shift predictions."
     ]
   },
   {
@@ -324,16 +320,12 @@ const benchmarkCards = [
     title: "Confused Tourists",
     venue: "CVPR 2026",
     venueClass: "cvpr",
+    paperHref: "https://arxiv.org/abs/2511.17004",
     stats: [
-      { value: "5,451", label: "Examples" },
+      { value: "5,451", label: "Samples" },
       { value: "Food · Attire · Instruments", label: "Target" },
       { value: "Landmark + Flag", label: "Perturbation" },
       { value: "Geography cue conflict", label: "Failure pattern" }
-    ],
-    bullets: [
-      "Targets cuisine, attire, and musical instruments.",
-      "Uses landmark and flag perturbations to stress geographic cues.",
-      "Measures how conflicting place signals destabilize cultural identification."
     ]
   },
   {
@@ -341,30 +333,29 @@ const benchmarkCards = [
     title: "When Tom Eats Kimchi",
     venue: "C3NLP Workshop",
     venueClass: "cl",
+    paperHref: "https://arxiv.org/abs/2503.16826",
     stats: [
-      { value: "2,475", label: "Examples" },
+      { value: "2,475", label: "Samples" },
       { value: "Food · Attire · Festivals", label: "Target" },
       { value: "Ethnicity", label: "Perturbation" },
       { value: "Person-cue overreach", label: "Failure pattern" }
-    ],
-    bullets: [
-      "Targets food, clothing, and festival recognition.",
-      "Uses ethnicity perturbations on the depicted person.",
-      "Measures how person appearance overrides the cultural item, with larger gaps for low-resource cultures."
     ]
   }
 ];
 
 const findings = [
   {
+    number: "01",
     title: "Models over-index on co-occurring cues",
     text: "Across all three projects, secondary context often overrides the target cultural item."
   },
   {
+    number: "02",
     title: "Mixed-culture scenes expose hidden failures",
     text: "Performance that looks stable in isolated settings breaks once multiple cultural signals co-exist."
   },
   {
+    number: "03",
     title: "Robustness is uneven across cultures",
     text: "Lower-resource cultural categories tend to absorb larger accuracy drops and higher prediction instability."
   }
@@ -417,37 +408,37 @@ const mainContributors = [
     name: "Eunsu Kim",
     affiliation: "KAIST",
     profile: "https://eunsu-k1m.github.io/",
-    photo: "static/images/contributors/eunsu.jpg"
+    photo: "static/images/contributors/eunsu.jpeg"
   },
   {
     name: "Ikhlasul Hanif",
     affiliation: "MBZUAI",
     profile: null,
-    photo: null
+    photo: "static/images/contributors/hanif.jpeg"
   },
   {
     name: "Jun Seong Kim",
     affiliation: "KAIST",
     profile: null,
-    photo: null
+    photo: "static/images/contributors/junseongkim.jpeg"
   },
   {
     name: "Junyeong Park",
     affiliation: "KAIST",
     profile: null,
-    photo: null
+    photo: "static/images/contributors/junyeong.jpeg"
   },
   {
     name: "Muhammad Dehan",
     affiliation: "MBZUAI",
     profile: null,
-    photo: null
+    photo: "static/images/contributors/dehan.jpeg"
   },
   {
     name: "Patrick Amadeus Irawan",
     affiliation: "MBZUAI",
     profile: null,
-    photo: null
+    photo: "static/images/contributors/patrick.jpeg"
   }
 ];
 
@@ -544,7 +535,7 @@ function renderPapers() {
           <div class="paper-side">
             <div class="paper-links">
               ${paper.links
-                .map((link) => `<a href="${link.href}" target="_blank" rel="noopener noreferrer">${link.label}</a>`)
+                .map((link) => `<a class="paper-link-${link.label.toLowerCase()}" href="${link.href}" target="_blank" rel="noopener noreferrer">${link.label}</a>`)
                 .join("")}
             </div>
           </div>
@@ -734,10 +725,17 @@ function renderGallery() {
   }
 
   const visible = dataset.examples.filter((example) => state.filter === "All" || example.filter === state.filter);
+  if (dataset.id === "confused-tourist") {
+    grid.innerHTML = visible.map(renderTouristExampleCard).join("");
+    const strip = document.getElementById("gallery-strip-wrap");
+    if (strip) strip.scrollLeft = 0;
+    return;
+  }
+
   grid.innerHTML = visible
     .map(
       (example) => `
-        <article class="gallery-card ${dataset.id === "confused-tourist" ? "gallery-card-tourist" : ""}">
+        <article class="gallery-card">
           <div class="gallery-image" style="background-image: linear-gradient(135deg, rgba(100,116,139,0.28), rgba(30,41,59,0.55)), url('${example.imageRef}')">
             <button class="gallery-image-zoom" type="button" data-zoom-src="${escapeAttribute(example.imageRef)}" data-zoom-caption="${escapeAttribute(
               example.cultureCue
@@ -749,19 +747,7 @@ function renderGallery() {
           </div>
           <div class="gallery-content">
             <div class="gallery-head">
-              ${dataset.id === "confused-tourist" ? "" : `<h3>${example.title}</h3>`}
-              ${
-                dataset.id === "confused-tourist"
-                  ? `<button
-                class="citation-copy-icon gallery-copy-icon"
-                type="button"
-                data-write-eval-prompt="true"
-                data-copy-category="${escapeAttribute(getEvaluationCategory(example))}"
-                aria-label="Copy evaluation prompt"
-                title="Copy evaluation prompt"
-              ></button>`
-                  : ""
-              }
+              <h3>${example.title}</h3>
             </div>
             ${
               example.cultureCue
@@ -769,23 +755,10 @@ function renderGallery() {
                 : ""
             }
             ${example.description ? `<p class="gallery-description">${example.description}</p>` : ""}
-            ${
-              dataset.id === "confused-tourist"
-                ? ""
-                : `<p class="gallery-prompt">${example.prompt}</p>`
-            }
-            ${
-              dataset.id === "confused-tourist"
-                ? `<div class="tourist-eval-grid">
-              ${renderEvalField("Ground Truth Country", example.groundTruthCountry)}
-              ${renderEvalField("Predicted Country", example.predictedCountry)}
-              ${renderEvalField("Ground Truth Item", example.groundTruthItem)}
-              ${renderEvalField("Predicted Item", example.predictedItem)}
-            </div>`
-                : `<div class="ground-truth-row">
+            <p class="gallery-prompt">${example.prompt}</p>
+            <div class="ground-truth-row">
               <span class="ground-truth-pill">${example.groundTruth || example.groundTruthItem || ""}</span>
-            </div>`
-            }
+            </div>
           </div>
         </article>
       `
@@ -794,6 +767,57 @@ function renderGallery() {
 
   const strip = document.getElementById("gallery-strip-wrap");
   if (strip) strip.scrollLeft = 0;
+}
+
+function renderTouristExampleCard(example) {
+  const category = getEvaluationCategory(example);
+  const prompt = buildEvaluationPrompt(category);
+  const originName = example.groundTruthItem || "Unknown";
+  const originCountry = example.groundTruthCountry || "Unknown";
+  const distractor = example.predictedCountry || "Mixed geographic cue";
+  const caption = `${example.title || example.groundTruthItem || "Confused Tourist example"} · ${example.filter || ""}`;
+  return `
+    <article class="gallery-card gallery-card-tourist">
+      <button
+        class="tourist-image-button"
+        type="button"
+        data-zoom-src="${escapeAttribute(example.imageRef)}"
+        data-zoom-caption="${escapeAttribute(caption)}"
+        aria-label="Enlarge ${escapeAttribute(example.title || "Confused Tourist example")}"
+      >
+        <img src="${escapeAttribute(example.imageRef)}" alt="${escapeAttribute(example.title || "Confused Tourist example")}" loading="lazy">
+      </button>
+      <div class="tourist-card-content">
+        <p class="tourist-prompt">${escapeHtml(prompt)}</p>
+        <div class="tourist-info-box">
+          <span class="tourist-info-row"><span class="tourist-info-label tourist-name-label">Name:</span><span class="tourist-info-value">${escapeHtml(originName)}</span></span>
+          <span class="tourist-info-row"><span class="tourist-info-label tourist-origin-label">Origin:</span><span class="tourist-info-value">${escapeHtml(originCountry)}</span></span>
+          <span class="tourist-info-row"><span class="tourist-info-label tourist-distractor-label">Distractor:</span><span class="tourist-info-value">${escapeHtml(distractor)}</span></span>
+        </div>
+        <div class="tourist-card-footer">
+          <span class="tourist-category-pill">${escapeHtml(example.filter || "Example")}</span>
+          <div class="tourist-copy-buttons">
+            <button
+              class="tourist-copy-btn tourist-copy-prompt"
+              type="button"
+              data-copy-prompt="${escapeAttribute(encodeURIComponent(prompt))}"
+            >
+              <span class="copy-icon" aria-hidden="true"></span>
+              <span>Copy Prompt</span>
+            </button>
+            <button
+              class="tourist-copy-btn tourist-copy-image"
+              type="button"
+              data-copy-image="${escapeAttribute(example.imageRef)}"
+            >
+              <span class="image-icon" aria-hidden="true"></span>
+              <span>Copy Image</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+  `;
 }
 
 function initGalleryStripDrag() {
@@ -866,9 +890,7 @@ function renderBenchmarks() {
               )
               .join("")}
           </div>
-          <ul class="benchmark-list">
-            ${item.bullets.map((bullet) => `<li>${bullet}</li>`).join("")}
-          </ul>
+          <a class="benchmark-paper-link" href="${escapeAttribute(item.paperHref)}" target="_blank" rel="noopener noreferrer">Paper <span aria-hidden="true">↗</span></a>
         </article>
       `
     )
@@ -882,6 +904,7 @@ function renderFindings() {
     .map(
       (item) => `
         <article class="finding-card">
+          <span class="finding-number">${item.number}</span>
           <h3>${item.title}</h3>
           <p>${item.text}</p>
         </article>
@@ -981,33 +1004,148 @@ function getEvaluationCategory(example) {
   return categoryMap[example.filter] || "cultural object";
 }
 
-function renderEvalField(label, value) {
-  const displayValue = value && value.trim() ? value : "Fill this";
-  const emptyClass = value && value.trim() ? "" : " is-empty";
-  const toneClass = label.toLowerCase().includes("ground truth") ? " is-ground-truth" : " is-predicted";
-  return `<div class="tourist-eval-cell${toneClass}${emptyClass}">
-    <span class="tourist-eval-label">${label}</span>
-    <strong class="tourist-eval-value">${displayValue}</strong>
-  </div>`;
-}
-
 function buildEvaluationPrompt(category) {
   return `Observe the image and determine from which country the ${category} originally comes from.\nReturn the country name only.\n\nIn this image, there is a cultural ${category} object. Determine the original name of this object.\nReturn the original name of this object only.`;
 }
 
-async function writeEvaluationPrompt(category, button) {
-  const promptText = buildEvaluationPrompt(category);
+async function copyTextToClipboard(text, button) {
+  const originalLabel = button.innerHTML;
   try {
-    await navigator.clipboard.writeText(promptText);
+    await navigator.clipboard.writeText(text);
+    button.innerHTML = `<span class="copy-icon" aria-hidden="true"></span><span>Copied!</span>`;
     button.classList.add("is-copied");
   } catch (_error) {
+    button.innerHTML = `<span class="copy-icon" aria-hidden="true"></span><span>Failed</span>`;
     button.classList.add("is-copy-failed");
   }
 
   window.setTimeout(() => {
     button.classList.remove("is-copied");
     button.classList.remove("is-copy-failed");
+    button.innerHTML = originalLabel;
   }, 1400);
+}
+
+async function copyImageToClipboard(imageUrl, button) {
+  const originalLabel = button.innerHTML;
+  button.classList.add("is-copying");
+  button.innerHTML = `<span class="image-icon" aria-hidden="true"></span><span>Copying...</span>`;
+  try {
+    if (window.location.protocol === "file:") {
+      throw new Error("Image clipboard copy cannot run from file://. Open this page through http://localhost:8000/ or HTTPS.");
+    }
+    if (!navigator.clipboard || typeof ClipboardItem === "undefined") {
+      throw new Error("Image clipboard API is not available in this browser.");
+    }
+    if (!window.isSecureContext) {
+      throw new Error("Image clipboard copy requires a secure browser context.");
+    }
+    await navigator.clipboard.write([new ClipboardItem({ "image/png": getCardImagePngBlob(button, imageUrl) })]);
+    button.innerHTML = `<span class="image-icon" aria-hidden="true"></span><span>Copied!</span>`;
+    button.classList.add("is-copied");
+  } catch (error) {
+    console.warn("Failed to copy image to clipboard:", error);
+    const message = window.location.protocol === "file:" ? "Use Localhost" : "Failed";
+    button.innerHTML = `<span class="image-icon" aria-hidden="true"></span><span>${message}</span>`;
+    button.classList.add("is-copy-failed");
+  } finally {
+    button.classList.remove("is-copying");
+    window.setTimeout(() => {
+      button.classList.remove("is-copied");
+      button.classList.remove("is-copy-failed");
+      button.innerHTML = originalLabel;
+    }, 1400);
+  }
+}
+
+async function copyTextFallback(text) {
+  if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.left = "-9999px";
+  textarea.style.top = "0";
+  document.body.appendChild(textarea);
+  textarea.select();
+  const copied = document.execCommand("copy");
+  document.body.removeChild(textarea);
+  if (!copied) {
+    throw new Error("Legacy copy command failed.");
+  }
+}
+
+function getCardImagePngBlob(button, imageUrl) {
+  const image =
+    button.closest(".gallery-card-tourist")?.querySelector(".tourist-image-button img") ||
+    document.querySelector(`img[src="${cssEscape(imageUrl)}"]`);
+
+  if (image && image.complete && image.naturalWidth > 0) {
+    return imageElementToPngBlob(image);
+  }
+
+  return fetchImageAsPngBlob(imageUrl);
+}
+
+function imageElementToPngBlob(image) {
+  return new Promise((resolve, reject) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = image.naturalWidth;
+    canvas.height = image.naturalHeight;
+    const context = canvas.getContext("2d");
+    if (!context) {
+      reject(new Error("Could not create canvas context."));
+      return;
+    }
+    try {
+      context.drawImage(image, 0, 0);
+      canvas.toBlob((blob) => {
+        if (blob) {
+          resolve(blob);
+        } else {
+          reject(new Error("Could not convert image to PNG."));
+        }
+      }, "image/png");
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+async function fetchImageAsPngBlob(imageUrl) {
+  const response = await fetch(imageUrl);
+  const blob = await response.blob();
+  if (blob.type === "image/png") return blob;
+  return blobToPngBlob(blob);
+}
+
+function blobToPngBlob(blob) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    const objectUrl = URL.createObjectURL(blob);
+    image.onload = () => {
+      imageElementToPngBlob(image)
+        .then(resolve)
+        .catch(reject)
+        .finally(() => URL.revokeObjectURL(objectUrl));
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error("Could not load image blob."));
+    };
+    image.src = objectUrl;
+  });
+}
+
+function cssEscape(value) {
+  if (window.CSS && typeof window.CSS.escape === "function") {
+    return window.CSS.escape(value);
+  }
+  return String(value).replace(/["\\]/g, "\\$&");
 }
 
 function attachInteractions() {
@@ -1052,10 +1190,19 @@ function attachInteractions() {
       return;
     }
 
-    const tryButton = event.target.closest("[data-write-eval-prompt]");
-    if (tryButton) {
-      const category = tryButton.dataset.copyCategory || "cultural object";
-      writeEvaluationPrompt(category, tryButton);
+    const promptButton = event.target.closest("[data-copy-prompt]");
+    if (promptButton) {
+      const promptText = decodeURIComponent(promptButton.dataset.copyPrompt || "");
+      if (!promptText) return;
+      copyTextToClipboard(promptText, promptButton);
+      return;
+    }
+
+    const imageButton = event.target.closest("[data-copy-image]");
+    if (imageButton) {
+      const imageUrl = imageButton.dataset.copyImage || "";
+      if (!imageUrl) return;
+      copyImageToClipboard(imageUrl, imageButton);
     }
   });
 }
@@ -1113,9 +1260,16 @@ function setupReveal() {
 }
 
 function escapeAttribute(text) {
-  return text
+  return String(text || "")
     .replace(/&/g, "&amp;")
     .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function escapeHtml(text) {
+  return String(text || "")
+    .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 }

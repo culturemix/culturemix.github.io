@@ -34,11 +34,9 @@
     <header class="topbar">
       <a class="brand" href="#top">CultureMix</a>
       <nav class="topnav" aria-label="Primary">
-        <a href="#threads">Papers</a>
+        <a href="#threads">Paper</a>
         <a href="#gallery">Gallery</a>
-        <a href="#benchmarks">Benchmarks</a>
         <a href="#findings">Findings</a>
-        <a href="#resources">Resources</a>
         <a href="#contributors">Contributors</a>
       </nav>
     </header>
@@ -89,54 +87,49 @@
               <img src="static/images/culturemix_ex4.jpg" alt="Culture-mixed food and context example 3">
             </a>
           </div>
-          <div class="hero-repo-card">
-            <p class="hero-repo-text">
-              This project page brings together three benchmarks showing how vision-language models drift, overfit, and
-              misclassify when food, people, landmarks, flags, and cultural artifacts are mixed inside one scene.
+          <div class="hero-action-links" aria-label="Page sections">
+            <a class="hero-action-link hero-action-paper" href="#threads">Paper</a>
+            <a class="hero-action-link hero-action-gallery" href="#gallery">Gallery</a>
+            <a class="hero-action-link hero-action-findings" href="#findings">Findings</a>
+            <a class="hero-action-link hero-action-contributors" href="#contributors">Contributors</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-block section-emphasis concept-section problem-section" id="why-it-matters">
+        <div class="section-heading section-heading-with-icon narrow">
+          <img class="section-icon" src="static/images/icons/cross.png" alt="" aria-hidden="true">
+          <p class="concept-overline">Why is this important?</p>
+          <h2>Culture mixing reduces VLM accuracy</h2>
+        </div>
+        <div class="problem-finding-card">
+          <div class="problem-finding-body">
+            <p>
+              <strong>Finding:</strong> Frontier VLMs are less accurate when cultural cues are mixed:
+              <br>
+              <span class="finding-metric">
+                <img src="static/images/icons/food.png" alt="" aria-hidden="true">
+                food <span class="degradation">-14%</span>
+              </span>
+              <span class="finding-metric">
+                <img src="static/images/icons/geo.png" alt="" aria-hidden="true">
+                geography <span class="degradation">-17.34%</span> to <span class="degradation">-18.4%</span>
+              </span>
+              <span class="finding-metric">
+                <img src="static/images/icons/race.png" alt="" aria-hidden="true">
+                person/face cues <span class="degradation">-58%</span>
+              </span>
             </p>
-            <div class="hero-paper-links">
-              <a class="hero-paper-link wif" href="https://arxiv.org/abs/2511.22787" target="_blank" rel="noopener noreferrer">World in a Frame<br>CVPR 2026</a>
-              <a class="hero-paper-link ct" href="https://arxiv.org/abs/2511.17004" target="_blank" rel="noopener noreferrer">Confused Tourists<br>CVPR 2026 (Findings)</a>
-              <a class="hero-paper-link ttk" href="https://arxiv.org/abs/2503.16826" target="_blank" rel="noopener noreferrer">When Tom Eats Kimchi<br>NAACL C3NLP 2025</a>
+            <div class="problem-finding-note">
+              Models often rely on background, geography, and appearance instead of the target cultural item.
             </div>
           </div>
         </div>
       </section>
 
-      <section class="section-block section-emphasis concept-section" id="why-it-matters">
-        <div class="section-heading narrow">
-          <p class="concept-overline">Why is this important?</p>
-          <h2>Culture mixing reveals model failures that evaluations in a single cultural context may miss</h2>
-        </div>
-        <div class="concept-grid">
-          <article class="concept-card">
-            <span class="concept-kicker">01</span>
-            <h3>Dominant cue bias</h3>
-            <p>
-              Models often anchor on the most visually salient cue, such as a person’s appearance or a famous landmark,
-              and overwrite the cultural identity of the focal item.
-            </p>
-          </article>
-          <article class="concept-card">
-            <span class="concept-kicker">02</span>
-            <h3>Context sensitivity</h3>
-            <p>
-              The same food can receive different predictions depending on who is eating it or the environment in which it appears, even when the food itself remains unchanged.
-            </p>
-          </article>
-          <article class="concept-card">
-            <span class="concept-kicker">03</span>
-            <h3>Resource asymmetry</h3>
-            <p>
-              High-resource cultures are typically more robust to perturbation, while low-resource cultures experience
-              larger drops in accuracy and larger sensitivity to contextual change.
-            </p>
-          </article>
-        </div>
-      </section>
-
       <section class="section-block" id="threads">
-        <div class="section-heading">
+        <div class="section-heading section-heading-with-icon">
+          <img class="section-icon" src="static/images/icons/question.png" alt="" aria-hidden="true">
           <p class="threads-overline">Our three papers ask one shared question</p>
           <h2>When cultural cues conflict in a single scene, which cues do models rely on most?</h2>
           <p>
@@ -147,10 +140,11 @@
       </section>
 
       <section class="section-block" id="gallery">
-        <div class="section-heading">
+        <div class="section-heading section-heading-with-icon">
+          <img class="section-icon" src="static/images/icons/data.png" alt="" aria-hidden="true">
           <h2>Explore our dataset</h2>
           <p>
-            Click an image to enlarge.
+            Copy a prompt and image to test whether your model is robust.
           </p>
         </div>
 
@@ -172,11 +166,27 @@
           </p>
         </div>
 
+        <div class="corpus-summary-card" aria-label="Joint CultureMix corpus summary">
+          <div class="corpus-summary-icon" aria-hidden="true">Σ</div>
+          <div class="corpus-summary-main">
+            <p class="corpus-summary-kicker">Unified CultureMix corpus</p>
+            <p class="corpus-summary-line">
+              <strong>30,957</strong> samples test whether VLMs preserve cultural identity under mixed visual cues.
+            </p>
+            <div class="corpus-summary-chips" aria-label="Corpus coverage">
+              <span>4 target families</span>
+              <span>5 perturbation cues</span>
+              <span>3 complementary benchmarks</span>
+            </div>
+          </div>
+        </div>
+
         <div class="benchmark-grid" id="benchmark-grid"></div>
       </section>
 
-      <section class="section-block" id="findings">
-        <div class="section-heading">
+      <section class="section-block findings-section" id="findings">
+        <div class="section-heading section-heading-with-icon">
+          <img class="section-icon" src="static/images/icons/findings.png" alt="" aria-hidden="true">
           <h2>Shared takeaways across the papers</h2>
         </div>
         <div class="findings-grid" id="findings-grid"></div>
