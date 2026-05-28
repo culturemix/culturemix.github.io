@@ -10,8 +10,8 @@ const papers = [
     description:
       "Introduces CultureMix, a food-centric benchmark for studying how LVLMs behave when cultural food cues are mixed with conflicting context.",
     bullets: [
-      "Builds a 23k diffusion-generated, human-verified benchmark for culture mixing in visual question answering.",
-      "Covers food-only, food+food, food+background, and food+food+background settings.",
+      "Builds a <strong>23k</strong> diffusion-generated, human-verified benchmark for culture mixing in visual question answering.",
+      "Covers <strong>food-only</strong>, <strong>food+food</strong>, <strong>food+background</strong>, and <strong>food+food+background</strong> settings.",
       "Shows notable drops once cultural backgrounds are introduced into otherwise recognizable food scenes.",
       "Studies model consistency and robustness strategies for reducing background sensitivity."
     ],
@@ -31,7 +31,7 @@ const papers = [
     description:
       "Builds a cultural adversarial robustness suite that reveals how VLMs misread cuisine, attire, and instruments under mixed geographic context.",
     bullets: [
-      "Introduces 5,451 samples spanning cuisine, attire, and musical instruments.",
+      "Introduces <strong>5,451</strong> samples spanning cuisine, attire, and musical instruments.",
       "Measures failures under culturally mixed settings created through context-aware perturbations.",
       "Compares robustness across multiple visual construction styles.",
       "Shows that cue conflict reliably destabilizes cultural recognition."
@@ -52,10 +52,10 @@ const papers = [
     description:
       "Introduces MixCuBe, a cross-cultural bias benchmark focused on how the depicted person shifts MLLM recognition of food and related cultural markers.",
     bullets: [
-      "Uses 2,475 images across five countries, four ethnicities, and three cultural marker types.",
+      "Uses <strong>2,475</strong> images across <strong>five countries</strong>, <strong>four ethnicities</strong>, and <strong>three cultural marker types</strong>.",
       "Finds strong over-reliance on person appearance when recognizing food items.",
       "Reports higher robustness for high-resource cultures than for low-resource ones.",
-      "Shows up to a 58% original-versus-perturbed gap for low-resource cultures on GPT-4o."
+      "Shows up to a <strong>58%</strong> original-versus-perturbed gap for low-resource cultures on GPT-4o."
     ],
     links: [
       { label: "Paper", href: "https://arxiv.org/abs/2503.16826" },
@@ -343,6 +343,12 @@ const benchmarkCards = [
   }
 ];
 
+const galleryDatasetOrder = ["confused-tourist", "world-in-a-frame", "mixcube"];
+
+function getOrderedGalleryDatasets() {
+  return [...galleryDatasets].sort((a, b) => galleryDatasetOrder.indexOf(a.id) - galleryDatasetOrder.indexOf(b.id));
+}
+
 const findings = [
   {
     number: "01",
@@ -445,7 +451,7 @@ const mainContributors = [
 const otherContributors = [];
 
 const state = {
-  datasetId: galleryDatasets[0].id,
+  datasetId: "confused-tourist",
   filter: "All",
   heroOffset: 0
 };
@@ -548,7 +554,7 @@ function renderPapers() {
 function renderDatasetTabs() {
   const tabs = document.getElementById("dataset-tabs");
   if (!tabs) return;
-  tabs.innerHTML = galleryDatasets
+  tabs.innerHTML = getOrderedGalleryDatasets()
     .map(
       (dataset) => `
         <button class="dataset-tab ${dataset.id === state.datasetId ? "is-active" : ""}" type="button" data-dataset-id="${dataset.id}">
