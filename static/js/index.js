@@ -441,7 +441,7 @@ const mainContributors = [
     photo: "static/images/contributors/dehan.jpeg"
   },
   {
-    name: "Patrick Amadeus Irawan",
+    name: "Patrick Irawan",
     affiliation: "MBZUAI",
     profile: null,
     photo: "static/images/contributors/patrick.jpeg"

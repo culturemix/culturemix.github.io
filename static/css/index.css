@@ -208,9 +208,7 @@ button {
   background: transparent;
 }
 
-.button:hover,
-.dataset-tab:hover,
-.filter-chip:hover {
+.button:hover {
   transform: translateY(-1px);
 }
 
@@ -308,7 +306,7 @@ button {
 }
 
 .hero-action-paper::before {
-  background-image: url("../images/icons/paper.png");
+  background-image: url("../images/icons/arxiv.png");
 }
 
 .hero-action-gallery {
@@ -780,7 +778,7 @@ button {
 }
 
 .paper-links .paper-link-paper::before {
-  background-image: url("../images/icons/paper.png");
+  background-image: url("../images/icons/arxiv.png");
 }
 
 .paper-links .paper-link-dataset {
@@ -976,7 +974,21 @@ button {
   background: #fff;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: var(--transition);
+  box-shadow: 0 2px 0 rgba(15, 23, 42, 0.12), 0 8px 16px rgba(15, 23, 42, 0.04);
+  transform: translateY(0);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.dataset-tab:hover,
+.filter-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 rgba(15, 23, 42, 0.14), 0 12px 18px rgba(15, 23, 42, 0.08);
+}
+
+.dataset-tab:active,
+.filter-chip:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.16), 0 5px 10px rgba(15, 23, 42, 0.06);
 }
 
 .dataset-tab.is-active,
@@ -1819,8 +1831,8 @@ button {
 }
 
 .university-logo-mbzuai {
-  max-width: min(38vw, 330px);
-  max-height: 82px;
+  max-width: min(32vw, 270px);
+  max-height: 68px;
 }
 
 .contributors-block + .contributors-block {
@@ -1940,6 +1952,24 @@ img.contributor-avatar-photo {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .hero-example-grid .hero-example-link:last-child,
+  .benchmark-grid .benchmark-card:last-child,
+  .findings-grid .finding-card:last-child {
+    grid-column: 1 / -1;
+    width: min(100%, calc((100% - 12px) / 2));
+    justify-self: center;
+  }
+
+  .venue-badge-floating {
+    position: static;
+    justify-self: end;
+    margin-bottom: -4px;
+  }
+
+  .paper-title-row h3 {
+    overflow-wrap: anywhere;
+  }
+
   .corpus-summary-card {
     align-items: flex-start;
   }
@@ -2037,6 +2067,21 @@ img.contributor-avatar-photo {
 
   .paper-card {
     grid-template-columns: 1fr;
+  }
+
+  .hero-example-grid {
+    justify-items: center;
+  }
+
+  .hero-example-grid .hero-example-link,
+  .hero-example-grid .hero-example-link:last-child,
+  .benchmark-grid .benchmark-card,
+  .benchmark-grid .benchmark-card:last-child,
+  .findings-grid .finding-card,
+  .findings-grid .finding-card:last-child {
+    grid-column: auto;
+    width: min(100%, 360px);
+    justify-self: center;
   }
 
   .paper-links {
